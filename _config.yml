@@ -103,7 +103,9 @@ theme: next
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repository: git@github.com:lich-wang/lich-wang.github.io
-  branch: main
-  token: $GH_TOKEN
+  repo: 
+    github:
+      url: https://github.com/lich-wang/lich-wang.github.io.git
+      branch: main
+      token: $GH_TOKEN
 
