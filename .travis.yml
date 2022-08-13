@@ -20,6 +20,8 @@ install:
 - npm install hexo-generator-feed --save
 - npm install hexo-deployer-git --save
 script:
+- git config --global user.name "lich-wang"
+- git config --global user.email "lich.wang@gmail.com"
 - hexo clean
 - hexo g
 - hexo d
