@@ -1,14 +1,11 @@
 sudo: false
 language: node_js
 node_js:
-  - 10 # use nodejs v10 LTS
+  - 12 # use nodejs v10 LTS
 cache: npm
 branches:
   only:
     - main # build master branch only
-script:
-  - npm install
-  - hexo generate # generate static files
 deploy:
   provider: pages
   skip-cleanup: true
@@ -17,3 +14,12 @@ deploy:
   on:
     branch: main
   local-dir: public
+install:
+ - npm install hexo-cli -g
+ - npm install
+ - npm install hexo-generator-feed --save
+ - npm install hexo-deployer-git --save
+script:
+ - hexo clean
+ - hexo g
+ - hexo d
