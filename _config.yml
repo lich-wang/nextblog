@@ -105,3 +105,5 @@ deploy:
   type: git
   repository: git@github.com:lich-wang/lich-wang.github.io
   branch: main
+  token: $GH_TOKEN
+
