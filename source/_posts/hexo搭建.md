@@ -1,5 +1,5 @@
 ---
-title: github_page、HEXO、Travis CI 、VScdoe搭建
+title: Github Page, Hexo, Travis CI, VS Cdoe 最佳实践
 ---
 # 介绍
 
