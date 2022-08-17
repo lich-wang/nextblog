@@ -58,7 +58,14 @@ C -->|Trave CI| D[Git Page 项目]
   * 实在没有虚拟机也可以
 
 
-# 远程环境/linux
-# GitHub source project
+# Hexo on Linux
+## 安装Node.js
+## 安装HEXO
+## 配置NEXT主题
+## 安装配置git
 # GitHub Page project
-# 本地环境/windows
+# GitHub source project
+# VS Code on Windows
+
+# 恢复 Hexo on Linux
+# 恢复 VS Code on Windows
