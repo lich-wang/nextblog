@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="介绍Github PageGithub Page 是GitHub提供的免费的静态网页托管服务, 只要创建一个和自己GitHub用户名相同的Project, 即可在 GitHub用户名.github.io 拥有一个网站, 非常适合用于作为个人博客网站使用. 使用 Github Page 作为个人博客有如下优势    完全免费 依托 Github, 背后有微软投资，跑路风险小 Greek, 或者说逼格">
+  <meta name="description" content="天空没有留下翅膀的痕迹,但我已经飞过 – 泰戈尔《飞鸟集》  Wiki WordPress Plugin 暴风城七桥">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Github Page, Hexo, Travis CI, VS Cdoe 最佳实践">
-<meta property="og:url" content="http://example.com/2022/08/17/hexo%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:title" content="翅膀的痕迹">
+<meta property="og:url" content="http://example.com/2022/08/18/%E7%BF%85%E8%86%80%E7%9A%84%E7%97%95%E8%BF%B9/index.html">
 <meta property="og:site_name" content="命匣隐匿之地">
-<meta property="og:description" content="介绍Github PageGithub Page 是GitHub提供的免费的静态网页托管服务, 只要创建一个和自己GitHub用户名相同的Project, 即可在 GitHub用户名.github.io 拥有一个网站, 非常适合用于作为个人博客网站使用. 使用 Github Page 作为个人博客有如下优势    完全免费 依托 Github, 背后有微软投资，跑路风险小 Greek, 或者说逼格">
+<meta property="og:description" content="天空没有留下翅膀的痕迹,但我已经飞过 – 泰戈尔《飞鸟集》  Wiki WordPress Plugin 暴风城七桥">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-08-17T13:50:43.673Z">
-<meta property="article:modified_time" content="2022-08-17T13:50:43.673Z">
+<meta property="article:published_time" content="2022-08-18T00:09:09.872Z">
+<meta property="article:modified_time" content="2022-08-18T00:09:09.872Z">
 <meta property="article:author" content="Lich Wang">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/08/17/hexo%E6%90%AD%E5%BB%BA/">
+<link rel="canonical" href="http://example.com/2022/08/18/%E7%BF%85%E8%86%80%E7%9A%84%E7%97%95%E8%BF%B9/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>Github Page, Hexo, Travis CI, VS Cdoe 最佳实践 | 命匣隐匿之地</title>
+  <title>翅膀的痕迹 | 命匣隐匿之地</title>
   
 
 
@@ -151,7 +151,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/17/hexo%E6%90%AD%E5%BB%BA/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/18/%E7%BF%85%E8%86%80%E7%9A%84%E7%97%95%E8%BF%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -164,7 +164,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Github Page, Hexo, Travis CI, VS Cdoe 最佳实践
+          翅膀的痕迹
         </h1>
 
         <div class="post-meta">
@@ -174,7 +174,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-08-17 13:50:43" itemprop="dateCreated datePublished" datetime="2022-08-17T13:50:43+00:00">2022-08-17</time>
+              <time title="创建时间：2022-08-18 00:09:09" itemprop="dateCreated datePublished" datetime="2022-08-18T00:09:09+00:00">2022-08-18</time>
             </span>
 
           
@@ -188,50 +188,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><h2 id="Github-Page"><a href="#Github-Page" class="headerlink" title="Github Page"></a>Github Page</h2><p><a target="_blank" rel="noopener" href="https://pages.github.com/">Github Page</a> 是GitHub提供的免费的静态网页托管服务, 只要创建一个和自己GitHub用户名相同的Project, 即可在 GitHub用户名.github.io 拥有一个网站, 非常适合用于作为个人博客网站使用.</p>
-<p>使用 Github Page 作为个人博客有如下优势  </p>
-<ul>
-<li>完全免费</li>
-<li>依托 Github, 背后有微软投资，跑路风险小</li>
-<li>Greek, 或者说逼格够高</li>
-<li>支持域名绑定</li>
-</ul>
-<h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 是一个快速, 简洁且高效的博客框架. Hexo 使用 Markdown（或其他渲染引擎）解析文章, 在几秒内, 即可利用靓丽的主题生成静态网页.</p>
-<p>使用 Hexo 作为 Github Page 博客系统有如下优势</p>
-<ul>
-<li>官方支持 GitHub Page</li>
-<li>有中文文档</li>
-<li>支持 Markdown</li>
-</ul>
-<h2 id="那么代价是什么"><a href="#那么代价是什么" class="headerlink" title="那么代价是什么"></a>那么代价是什么</h2><p>直接使用 Github Page 和 Hexo 的缺点也很明显</p>
-<ul>
-<li>过于Greek, 直接编辑发帖不方便</li>
-<li>Markdown 编写还是不直观</li>
-<li>Hexo 发布到 Github Page 依然有多个步骤</li>
-</ul>
-<p>为了解决这个问题, 下面是我的最佳实践</p>
-<h2 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h2><pre class="mermaid">flowchart LR
+        <blockquote>
+<p>天空没有留下翅膀的痕迹,但我已经飞过</p>
+<p>– <cite>泰戈尔《飞鸟集》</cite></p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Special:%E7%94%A8%E6%88%B7%E8%B4%A1%E7%8C%AE/Lich_wang">Wiki</a></p>
+<p><a target="_blank" rel="noopener" href="https://wordpress.org/plugins/tagmaker/">WordPress Plugin</a></p>
+<p><a target="_blank" rel="noopener" href="https://bbs.nga.cn/read.php?tid=1133256">暴风城七桥</a></p>
 
-A[VS code] -->|编辑| B[Hexo 源项目]
-B -->|git push| C[Git 源项目]
-C -->|Trave CI| D[Git Page 项目]</pre>
-<ul>
-<li>在 VS Code 使用 Remote SSH, Markdown Preview Enchanted, Markdown All in One 远程可视化编辑部署在Linux Service 上的 md 源文件</li>
-<li>完成编辑后使用 VS Code 直接 commit 和 push 文章到GitHub源项目</li>
-<li>Github 上的源项目通过Travel CI 持续集成直接发布到GitHub Page项目</li>
-</ul>
-<p>这样就可以实现所见即所得, 并且不同环境只要打开 VS Code 简单安装三个插件, 少量配置即可保持一致的文章发布体验.并且所有的配置和数据都在服务器. 任何情况都可以轻易恢复环境.</p>
-<p>下面在正式开始环境搭建之前,需要做好如下准备.</p>
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
-<li>github 账号</li>
-<li>自由访问互联网</li>
-<li>一台Linux service<ul>
-<li>最好24小时运行</li>
-<li>实在没有虚拟机也可以</li>
-</ul>
-</li>
-</ul>
-<h1 id="Hexo-on-Linux"><a href="#Hexo-on-Linux" class="headerlink" title="Hexo on Linux"></a>Hexo on Linux</h1><h2 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h2><h2 id="安装HEXO"><a href="#安装HEXO" class="headerlink" title="安装HEXO"></a>安装HEXO</h2><h2 id="配置NEXT主题"><a href="#配置NEXT主题" class="headerlink" title="配置NEXT主题"></a>配置NEXT主题</h2><h2 id="安装配置git"><a href="#安装配置git" class="headerlink" title="安装配置git"></a>安装配置git</h2><h1 id="GitHub-Page-project"><a href="#GitHub-Page-project" class="headerlink" title="GitHub Page project"></a>GitHub Page project</h1><h1 id="GitHub-source-project"><a href="#GitHub-source-project" class="headerlink" title="GitHub source project"></a>GitHub source project</h1><h1 id="VS-Code-on-Windows"><a href="#VS-Code-on-Windows" class="headerlink" title="VS Code on Windows"></a>VS Code on Windows</h1><h1 id="恢复-Hexo-on-Linux"><a href="#恢复-Hexo-on-Linux" class="headerlink" title="恢复 Hexo on Linux"></a>恢复 Hexo on Linux</h1><h1 id="恢复-VS-Code-on-Windows"><a href="#恢复-VS-Code-on-Windows" class="headerlink" title="恢复 VS Code on Windows"></a>恢复 VS Code on Windows</h1>
     </div>
 
     
@@ -246,10 +210,13 @@ C -->|Trave CI| D[Git Page 项目]</pre>
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/08/17/%E4%B8%AD%E5%9B%BD%E4%BA%92%E8%81%94%E7%BD%91%E5%BE%80%E4%BA%8B/" rel="prev" title="中国互联网往事">
+    <a href="/2022/08/18/%E4%B8%AD%E5%9B%BD%E4%BA%92%E8%81%94%E7%BD%91%E5%BE%80%E4%BA%8B/" rel="prev" title="中国互联网往事">
       <i class="fa fa-chevron-left"></i> 中国互联网往事
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/08/18/hexo%E6%90%AD%E5%BB%BA/" rel="next" title="Github Page, Hexo, Travis CI, VS Cdoe 最佳实践">
+      Github Page, Hexo, Travis CI, VS Cdoe 最佳实践 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -308,7 +275,6 @@ C -->|Trave CI| D[Git Page 项目]</pre>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Github-Page"><span class="nav-number">1.1.</span> <span class="nav-text">Github Page</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo"><span class="nav-number">1.2.</span> <span class="nav-text">Hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%82%A3%E4%B9%88%E4%BB%A3%E4%BB%B7%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.3.</span> <span class="nav-text">那么代价是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-number">1.4.</span> <span class="nav-text">工作流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">1.5.</span> <span class="nav-text">准备</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hexo-on-Linux"><span class="nav-number">2.</span> <span class="nav-text">Hexo on Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Node-js"><span class="nav-number">2.1.</span> <span class="nav-text">安装Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85HEXO"><span class="nav-number">2.2.</span> <span class="nav-text">安装HEXO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AENEXT%E4%B8%BB%E9%A2%98"><span class="nav-number">2.3.</span> <span class="nav-text">配置NEXT主题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEgit"><span class="nav-number">2.4.</span> <span class="nav-text">安装配置git</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GitHub-Page-project"><span class="nav-number">3.</span> <span class="nav-text">GitHub Page project</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GitHub-source-project"><span class="nav-number">4.</span> <span class="nav-text">GitHub source project</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VS-Code-on-Windows"><span class="nav-number">5.</span> <span class="nav-text">VS Code on Windows</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%81%A2%E5%A4%8D-Hexo-on-Linux"><span class="nav-number">6.</span> <span class="nav-text">恢复 Hexo on Linux</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%81%A2%E5%A4%8D-VS-Code-on-Windows"><span class="nav-number">7.</span> <span class="nav-text">恢复 VS Code on Windows</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -322,7 +288,7 @@ C -->|Trave CI| D[Git Page 项目]</pre>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

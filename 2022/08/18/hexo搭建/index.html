@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="介绍Github PageGithub Page 是GitHub提供的免费的静态网页托管服务, 只要创建一个和自己GitHub用户名相同的Project, 即可在 GitHub用户名.github.io 拥有一个网站, 非常适合用于作为个人博客网站使用. 使用 Github Page 作为个人博客有如下优势    完全免费 依托 Github, 背后有微软投资，跑路风险小 Greek, 或者说逼格">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github Page, Hexo, Travis CI, VS Cdoe 最佳实践">
+<meta property="og:url" content="http://example.com/2022/08/18/hexo%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="命匣隐匿之地">
+<meta property="og:description" content="介绍Github PageGithub Page 是GitHub提供的免费的静态网页托管服务, 只要创建一个和自己GitHub用户名相同的Project, 即可在 GitHub用户名.github.io 拥有一个网站, 非常适合用于作为个人博客网站使用. 使用 Github Page 作为个人博客有如下优势    完全免费 依托 Github, 背后有微软投资，跑路风险小 Greek, 或者说逼格">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-18T00:09:09.872Z">
+<meta property="article:modified_time" content="2022-08-18T00:09:09.872Z">
+<meta property="article:author" content="Lich Wang">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2022/08/18/hexo%E6%90%AD%E5%BB%BA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Github Page, Hexo, Travis CI, VS Cdoe 最佳实践 | 命匣隐匿之地</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="命匣隐匿之地" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">命匣隐匿之地</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/18/hexo%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Lich Wang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="命匣隐匿之地">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Github Page, Hexo, Travis CI, VS Cdoe 最佳实践
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-08-18 00:09:09" itemprop="dateCreated datePublished" datetime="2022-08-18T00:09:09+00:00">2022-08-18</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><h2 id="Github-Page"><a href="#Github-Page" class="headerlink" title="Github Page"></a>Github Page</h2><p><a target="_blank" rel="noopener" href="https://pages.github.com/">Github Page</a> 是GitHub提供的免费的静态网页托管服务, 只要创建一个和自己GitHub用户名相同的Project, 即可在 GitHub用户名.github.io 拥有一个网站, 非常适合用于作为个人博客网站使用.</p>
+<p>使用 Github Page 作为个人博客有如下优势  </p>
+<ul>
+<li>完全免费</li>
+<li>依托 Github, 背后有微软投资，跑路风险小</li>
+<li>Greek, 或者说逼格够高</li>
+<li>支持域名绑定</li>
+</ul>
+<h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 是一个快速, 简洁且高效的博客框架. Hexo 使用 Markdown（或其他渲染引擎）解析文章, 在几秒内, 即可利用靓丽的主题生成静态网页.</p>
+<p>使用 Hexo 作为 Github Page 博客系统有如下优势</p>
+<ul>
+<li>官方支持 GitHub Page</li>
+<li>有中文文档</li>
+<li>支持 Markdown</li>
+</ul>
+<h2 id="那么代价是什么"><a href="#那么代价是什么" class="headerlink" title="那么代价是什么"></a>那么代价是什么</h2><p>直接使用 Github Page 和 Hexo 的缺点也很明显</p>
+<ul>
+<li>过于Greek, 直接编辑发帖不方便</li>
+<li>Markdown 编写还是不直观</li>
+<li>Hexo 发布到 Github Page 依然有多个步骤</li>
+</ul>
+<p>为了解决这个问题, 下面是我的最佳实践</p>
+<h2 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h2><pre class="mermaid">flowchart LR
+
+A[VS code] -->|编辑| B[Hexo 源项目]
+B -->|git push| C[Git 源项目]
+C -->|Trave CI| D[Git Page 项目]</pre>
+<ul>
+<li>在 VS Code 使用 Remote SSH, Markdown Preview Enchanted, Markdown All in One 远程可视化编辑部署在Linux Service 上的 md 源文件</li>
+<li>完成编辑后使用 VS Code 直接 commit 和 push 文章到GitHub源项目</li>
+<li>Github 上的源项目通过Travel CI 持续集成直接发布到GitHub Page项目</li>
+</ul>
+<p>这样就可以实现所见即所得, 并且不同环境只要打开 VS Code 简单安装三个插件, 少量配置即可保持一致的文章发布体验.并且所有的配置和数据都在服务器. 任何情况都可以轻易恢复环境.</p>
+<p>下面在正式开始环境搭建之前,需要做好如下准备.</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
+<li>github 账号</li>
+<li>自由访问互联网</li>
+<li>一台Linux service<ul>
+<li>最好24小时运行</li>
+<li>实在没有虚拟机也可以</li>
+</ul>
+</li>
+</ul>
+<h1 id="Hexo-on-Linux"><a href="#Hexo-on-Linux" class="headerlink" title="Hexo on Linux"></a>Hexo on Linux</h1><h2 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h2><h2 id="安装HEXO"><a href="#安装HEXO" class="headerlink" title="安装HEXO"></a>安装HEXO</h2><h2 id="配置NEXT主题"><a href="#配置NEXT主题" class="headerlink" title="配置NEXT主题"></a>配置NEXT主题</h2><h2 id="安装配置git"><a href="#安装配置git" class="headerlink" title="安装配置git"></a>安装配置git</h2><h1 id="GitHub-Page-project"><a href="#GitHub-Page-project" class="headerlink" title="GitHub Page project"></a>GitHub Page project</h1><h1 id="GitHub-source-project"><a href="#GitHub-source-project" class="headerlink" title="GitHub source project"></a>GitHub source project</h1><h1 id="VS-Code-on-Windows"><a href="#VS-Code-on-Windows" class="headerlink" title="VS Code on Windows"></a>VS Code on Windows</h1><h1 id="恢复-Hexo-on-Linux"><a href="#恢复-Hexo-on-Linux" class="headerlink" title="恢复 Hexo on Linux"></a>恢复 Hexo on Linux</h1><h1 id="恢复-VS-Code-on-Windows"><a href="#恢复-VS-Code-on-Windows" class="headerlink" title="恢复 VS Code on Windows"></a>恢复 VS Code on Windows</h1>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/18/%E7%BF%85%E8%86%80%E7%9A%84%E7%97%95%E8%BF%B9/" rel="prev" title="翅膀的痕迹">
+      <i class="fa fa-chevron-left"></i> 翅膀的痕迹
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Github-Page"><span class="nav-number">1.1.</span> <span class="nav-text">Github Page</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hexo"><span class="nav-number">1.2.</span> <span class="nav-text">Hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%82%A3%E4%B9%88%E4%BB%A3%E4%BB%B7%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.3.</span> <span class="nav-text">那么代价是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-number">1.4.</span> <span class="nav-text">工作流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">1.5.</span> <span class="nav-text">准备</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hexo-on-Linux"><span class="nav-number">2.</span> <span class="nav-text">Hexo on Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Node-js"><span class="nav-number">2.1.</span> <span class="nav-text">安装Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85HEXO"><span class="nav-number">2.2.</span> <span class="nav-text">安装HEXO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AENEXT%E4%B8%BB%E9%A2%98"><span class="nav-number">2.3.</span> <span class="nav-text">配置NEXT主题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEgit"><span class="nav-number">2.4.</span> <span class="nav-text">安装配置git</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GitHub-Page-project"><span class="nav-number">3.</span> <span class="nav-text">GitHub Page project</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GitHub-source-project"><span class="nav-number">4.</span> <span class="nav-text">GitHub source project</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VS-Code-on-Windows"><span class="nav-number">5.</span> <span class="nav-text">VS Code on Windows</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%81%A2%E5%A4%8D-Hexo-on-Linux"><span class="nav-number">6.</span> <span class="nav-text">恢复 Hexo on Linux</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%81%A2%E5%A4%8D-VS-Code-on-Windows"><span class="nav-number">7.</span> <span class="nav-text">恢复 VS Code on Windows</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Lich Wang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/lich-wang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;lich-wang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:lich.wang@gmail.com" title="E-Mail → mailto:lich.wang@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lich Wang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
