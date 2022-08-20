@@ -69,3 +69,58 @@ C -->|Trave CI| D[Git Page 项目]
 
 # 恢复 Hexo on Linux
 # 恢复 VS Code on Windows
+
+## 下载安装VS Code
+## 命令行生成密钥
+``` PowerShell
+ssh-keygen -t rsa -C "lichPC"
+```
+输出如下，其中“lichPC” 为注释，随便写
+``` PowerShell
+PS C:\Users\lich> ssh-keygen -t rsa -C "lichPC"
+Generating public/private rsa key pair.
+Enter file in which to save the key (C:\Users\lich/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in C:\Users\lich/.ssh/id_rsa.
+Your public key has been saved in C:\Users\lich/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:HCWn15Tt33hWj6+kfgjptsWS7SpqbUA16c6mfZj7ZKo lichPC
+The key's randomart image is:
++---[RSA 3072]----+
+|        ..o .o   |
+|        += o. .  |
+|       oo.. ..   |
+|      ...o    . .|
+|     . oS  .   ++|
+|      . + o+  o *|
+|       * +=.+..+ |
+|      o B+++.o. .|
+|     .E+o*+++... |
++----[SHA256]-----+
+```
+## 查看，并复制公钥信息
+``` PowerShell
+cat ~\.ssh\id_rsa.pub
+```
+复制输出的内容
+``` PowerShell
+PS C:\Users\lich\.ssh> cat ~\.ssh\id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDIlqewgvVeHx8b0+KrO7ucL2ynXNrIEq+isG07rYR2rf4HYSbaDxWk9ZspGSp4zxzc1OZ+nraofeRnlCX2ijMc0RfUE9nf9qPq7/J08SbQ96dz/pbKb2h5MHKk3UIfq0+40ZOoPpGqVZ0/qJdthBM9DdwB4V/xjJlKZojgLJzy3XheGYjGSfoTJjHK9HfvRxFrJXnLG9Lh0tYRZ/KE6ox129KaSSabQswTRpArzkKe88WaBWu6rV31+FDRirJxXZZ6pN0IS4mXTRViNhMc4KXk3fO5LxDHRCX9tCzr+FLBpDrhr6+aK7zU6Ur6i7wXNzNIoBXnhldZyHUuCBARG5wN4g5AjrUzQPZF3hFyZzRDR9ZLCxK0mWN4VchBDqgx9ST38NibyKFnMjerPVPyng9MvKllkqUUqulwTatElH+IfwFocn31O+vIP7et0Eii3PtJWFDXDQTl7FLOEFO8qDHpm04+b3bRq1GlGJIKcu+JJXIX67fQKQzzcmQ9C2f22f8= lichPC
+```
+
+## 添加公钥到远程服务器
+
+```bash
+nano ~/.ssh/authorized_keys
+```
+粘贴公钥信息到最后一行
+
+``` bash
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO9INiHnEXicATPWzDpADnw3edvp+iEKhkopHaRpyTk8 lich.wang@gmail.com
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDiwY8yydjvuLfY78zxvPMoQyJQOwjnskOTH+Hbs7PTL8J+niZT7FSChTdNdBwVqA9EqAhht0/Adu+8LnbZIa78nk9qmfVEMyVmBhnaY1VlAb6nfNQ2PA3+YYZlhmn5j3Jc/WE2v7emUCxMhht+Ic4yZI5I34VLwKWrpzyhUmfRq0siifuIS0G9soIOb37dPyWBMqKutwXZ240KIz7VGGpRgIzEY4Wtelar4UqF8Whkl65RptWR325WeXRMQyW9gm5CayorYs9WDtHFOtDi4zwy6ioqy/cyypoGy8uXmMxU2DRMs+fEGvX4P4bPBGo+twvq0IagKmOzzPvQzUaXeDtBdS0tzGJC0FJxC7f5tRsWC+6Q7MnmVOPcmV74e9OgN5cNUcQnN8dk2zXm8NR4G54s3TM8wdtyBJolS3Zxhj3Bh0vJxyQSkMJoax6Bnccg9F+Br9x6cJJdrhy7rZfR4E8IfiQpqAsGI8u80c4j6K3fcWWCquW1/hO0GaQdoHt9uks= lich@DESKTOP-54AOQFI
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDIlqewgvVeHx8b0+KrO7ucL2ynXNrIEq+isG07rYR2rf4HYSbaDxWk9ZspGSp4zxzc1OZ+nraofeRnlCX2ijMc0RfUE9nf9qPq7/J08SbQ96dz/pbKb2h5MHKk3UIfq0+40ZOoPpGqVZ0/qJdthBM9DdwB4V/xjJlKZojgLJzy3XheGYjGSfoTJjHK9HfvRxFrJXnLG9Lh0tYRZ/KE6ox129KaSSabQswTRpArzkKe88WaBWu6rV31+FDRirJxXZZ6pN0IS4mXTRViNhMc4KXk3fO5LxDHRCX9tCzr+FLBpDrhr6+aK7zU6Ur6i7wXNzNIoBXnhldZyHUuCBARG5wN4g5AjrUzQPZF3hFyZzRDR9ZLCxK0mWN4VchBDqgx9ST38NibyKFnMjerPVPyng9MvKllkqUUqulwTatElH+IfwFocn31O+vIP7et0Eii3PtJWFDXDQTl7FLOEFO8qDHpm04+b3bRq1GlGJIKcu+JJXIX67fQKQzzcmQ9C2f22f8= lichPC
+```
+
+## VS code 添加远程服务
+VS Code 安装 remote SSH 插件后,输入 ```   ssh pi@lich.tech -p 15001  ``` 连接服务器
