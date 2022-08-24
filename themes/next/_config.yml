@@ -119,9 +119,9 @@ darkmode: false
 menu:
   home: / || home
   about: /about/ || user
-  tags: /tags/ || tags
+#  tags: /tags/ || tags
   links: /links/ || sitemap
-  categories: /categories/ || th
+#  categories: /categories/ || th
   archives: /archives/ || archive
 #  schedule: /schedule/ || calendar
 #  sitemap: /sitemap.xml || sitemap
