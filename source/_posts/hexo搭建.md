@@ -21,6 +21,8 @@ title: Github Page, Hexo, Travis CI, VS Cdoe 最佳实践
 * 官方支持 GitHub Page
 * 有中文文档
 * 支持 Markdown
+  
+<!-- more -->
 
 ## 那么代价是什么
 
