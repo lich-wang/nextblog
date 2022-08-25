@@ -62,13 +62,17 @@ C -->|Trave CI| D[Git Page 项目]
 
 # Hexo on Linux
 
-创建
-``` bash
+Ubuntu 为例
 
+## 准备工作
+- 更新系统
+
+``` bash
 sudo apt update
 sudo apt upgrade
 ```
 
+- 创建工作目录，后面所有操作默认在下面的目录执行
 ``` bash
 mkdir nextblog
 cd nextblog
@@ -76,18 +80,33 @@ cd nextblog
 
 ## 安装Node.js
 
+- 安装npm，依赖的node就自动安装了
 ``` bash
 sudo apt install npm
+```
+
+- 安装后查看版本
+``` bash
 node -v
 npm -v
 ```
 
 ## 安装HEXO
+
+- 完整安装Hexo
+``` bash
+npm install -g hexo-cli
+```
+- 初始化 Hexo, 注意一定在新目录下.
 ``` bash
 hexo init
 npm install 
-
 ```
+- 启动Hexo
+```
+hexo d
+```
+
 ## 配置NEXT主题
 ## 安装配置git
 # GitHub Page project
