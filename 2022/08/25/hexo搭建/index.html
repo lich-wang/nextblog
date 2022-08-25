@@ -23,16 +23,16 @@
   <meta name="description" content="介绍Github PageGithub Page 是GitHub提供的免费的静态网页托管服务, 只要创建一个和自己GitHub用户名相同的Project, 即可在 GitHub用户名.github.io 拥有一个网站, 非常适合用于作为个人博客网站使用. 使用 Github Page 作为个人博客有如下优势    完全免费 依托 Github, 背后有微软投资，跑路风险小 Greek, 或者说逼格">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Github Page, Hexo, Travis CI, VS Cdoe 最佳实践">
-<meta property="og:url" content="http://example.com/2022/08/24/hexo%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:url" content="http://example.com/2022/08/25/hexo%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name" content="命匣隐匿之地">
 <meta property="og:description" content="介绍Github PageGithub Page 是GitHub提供的免费的静态网页托管服务, 只要创建一个和自己GitHub用户名相同的Project, 即可在 GitHub用户名.github.io 拥有一个网站, 非常适合用于作为个人博客网站使用. 使用 Github Page 作为个人博客有如下优势    完全免费 依托 Github, 背后有微软投资，跑路风险小 Greek, 或者说逼格">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-08-24T14:11:52.391Z">
-<meta property="article:modified_time" content="2022-08-24T14:11:52.391Z">
+<meta property="article:published_time" content="2022-08-25T00:51:08.504Z">
+<meta property="article:modified_time" content="2022-08-25T00:51:08.504Z">
 <meta property="article:author" content="Lich Wang">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/08/24/hexo%E6%90%AD%E5%BB%BA/">
+<link rel="canonical" href="http://example.com/2022/08/25/hexo%E6%90%AD%E5%BB%BA/">
 
 
 <script id="page-configurations">
@@ -161,7 +161,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/24/hexo%E6%90%AD%E5%BB%BA/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/25/hexo%E6%90%AD%E5%BB%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -184,7 +184,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2022-08-24 14:11:52" itemprop="dateCreated datePublished" datetime="2022-08-24T14:11:52+00:00">2022-08-24</time>
+              <time title="创建时间：2022-08-25 00:51:08" itemprop="dateCreated datePublished" datetime="2022-08-25T00:51:08+00:00">2022-08-25</time>
             </span>
 
           
@@ -243,7 +243,15 @@ C -->|Trave CI| D[Git Page 项目]</pre>
 </ul>
 </li>
 </ul>
-<h1 id="Hexo-on-Linux"><a href="#Hexo-on-Linux" class="headerlink" title="Hexo on Linux"></a>Hexo on Linux</h1><h2 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h2><h2 id="安装HEXO"><a href="#安装HEXO" class="headerlink" title="安装HEXO"></a>安装HEXO</h2><h2 id="配置NEXT主题"><a href="#配置NEXT主题" class="headerlink" title="配置NEXT主题"></a>配置NEXT主题</h2><h2 id="安装配置git"><a href="#安装配置git" class="headerlink" title="安装配置git"></a>安装配置git</h2><h1 id="GitHub-Page-project"><a href="#GitHub-Page-project" class="headerlink" title="GitHub Page project"></a>GitHub Page project</h1><h1 id="GitHub-source-project"><a href="#GitHub-source-project" class="headerlink" title="GitHub source project"></a>GitHub source project</h1><h1 id="VS-Code-on-Windows"><a href="#VS-Code-on-Windows" class="headerlink" title="VS Code on Windows"></a>VS Code on Windows</h1><h1 id="恢复-Hexo-on-Linux"><a href="#恢复-Hexo-on-Linux" class="headerlink" title="恢复 Hexo on Linux"></a>恢复 Hexo on Linux</h1><h1 id="恢复-VS-Code-on-Windows"><a href="#恢复-VS-Code-on-Windows" class="headerlink" title="恢复 VS Code on Windows"></a>恢复 VS Code on Windows</h1><h2 id="下载安装VS-Code"><a href="#下载安装VS-Code" class="headerlink" title="下载安装VS Code"></a>下载安装VS Code</h2><h2 id="命令行生成密钥"><a href="#命令行生成密钥" class="headerlink" title="命令行生成密钥"></a>命令行生成密钥</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh<span class="literal">-keygen</span> <span class="literal">-t</span> rsa <span class="literal">-C</span> <span class="string">&quot;lichPC&quot;</span></span><br></pre></td></tr></table></figure>
+<h1 id="Hexo-on-Linux"><a href="#Hexo-on-Linux" class="headerlink" title="Hexo on Linux"></a>Hexo on Linux</h1><p>创建</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt upgrade</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> nextblog</span><br><span class="line"><span class="built_in">cd</span> nextblog</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install npm</span><br><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装HEXO"><a href="#安装HEXO" class="headerlink" title="安装HEXO"></a>安装HEXO</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="配置NEXT主题"><a href="#配置NEXT主题" class="headerlink" title="配置NEXT主题"></a>配置NEXT主题</h2><h2 id="安装配置git"><a href="#安装配置git" class="headerlink" title="安装配置git"></a>安装配置git</h2><h1 id="GitHub-Page-project"><a href="#GitHub-Page-project" class="headerlink" title="GitHub Page project"></a>GitHub Page project</h1><h1 id="GitHub-source-project"><a href="#GitHub-source-project" class="headerlink" title="GitHub source project"></a>GitHub source project</h1><h1 id="VS-Code-on-Windows"><a href="#VS-Code-on-Windows" class="headerlink" title="VS Code on Windows"></a>VS Code on Windows</h1><h1 id="恢复-Hexo-on-Linux"><a href="#恢复-Hexo-on-Linux" class="headerlink" title="恢复 Hexo on Linux"></a>恢复 Hexo on Linux</h1><h1 id="恢复-VS-Code-on-Windows"><a href="#恢复-VS-Code-on-Windows" class="headerlink" title="恢复 VS Code on Windows"></a>恢复 VS Code on Windows</h1><h2 id="下载安装VS-Code"><a href="#下载安装VS-Code" class="headerlink" title="下载安装VS Code"></a>下载安装VS Code</h2><h2 id="命令行生成密钥"><a href="#命令行生成密钥" class="headerlink" title="命令行生成密钥"></a>命令行生成密钥</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh<span class="literal">-keygen</span> <span class="literal">-t</span> rsa <span class="literal">-C</span> <span class="string">&quot;lichPC&quot;</span></span><br></pre></td></tr></table></figure>
 <p>输出如下，其中“lichPC” 为注释，随便写</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">PS</span> C:\Users\lich&gt; ssh<span class="literal">-keygen</span> <span class="literal">-t</span> rsa <span class="literal">-C</span> <span class="string">&quot;lichPC&quot;</span></span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file <span class="keyword">in</span> which to save the key (C:\Users\lich/.ssh/id_rsa):</span><br><span class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase):</span><br><span class="line">Enter same passphrase again:</span><br><span class="line">Your identification has been saved <span class="keyword">in</span> C:\Users\lich/.ssh/id_rsa.</span><br><span class="line">Your public key has been saved <span class="keyword">in</span> C:\Users\lich/.ssh/id_rsa.pub.</span><br><span class="line">The key fingerprint is:</span><br><span class="line">SHA256:HCWn15Tt33hWj6+kfgjptsWS7SpqbUA16c6mfZj7ZKo lichPC</span><br><span class="line">The key<span class="string">&#x27;s randomart image is:</span></span><br><span class="line"><span class="string">+---[RSA 3072]----+</span></span><br><span class="line"><span class="string">|        ..o .o   |</span></span><br><span class="line"><span class="string">|        += o. .  |</span></span><br><span class="line"><span class="string">|       oo.. ..   |</span></span><br><span class="line"><span class="string">|      ...o    . .|</span></span><br><span class="line"><span class="string">|     . oS  .   ++|</span></span><br><span class="line"><span class="string">|      . + o+  o *|</span></span><br><span class="line"><span class="string">|       * +=.+..+ |</span></span><br><span class="line"><span class="string">|      o B+++.o. .|</span></span><br><span class="line"><span class="string">|     .E+o*+++... |</span></span><br><span class="line"><span class="string">+----[SHA256]-----+</span></span><br></pre></td></tr></table></figure>
 <h2 id="查看，并复制公钥信息"><a href="#查看，并复制公钥信息" class="headerlink" title="查看，并复制公钥信息"></a>查看，并复制公钥信息</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> ~\.ssh\id_rsa.pub</span><br></pre></td></tr></table></figure>
@@ -270,7 +278,7 @@ C -->|Trave CI| D[Git Page 项目]</pre>
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/08/24/%E4%B8%AD%E5%9B%BD%E4%BA%92%E8%81%94%E7%BD%91%E5%BE%80%E4%BA%8B/" rel="prev" title="中国互联网往事">
+    <a href="/2022/08/25/%E4%B8%AD%E5%9B%BD%E4%BA%92%E8%81%94%E7%BD%91%E5%BE%80%E4%BA%8B/" rel="prev" title="中国互联网往事">
       <i class="fa fa-chevron-left"></i> 中国互联网往事
     </a></div>
       <div class="post-nav-item"></div>
