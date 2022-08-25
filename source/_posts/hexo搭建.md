@@ -61,8 +61,33 @@ C -->|Trave CI| D[Git Page 项目]
 
 
 # Hexo on Linux
+
+创建
+``` bash
+
+sudo apt update
+sudo apt upgrade
+```
+
+``` bash
+mkdir nextblog
+cd nextblog
+```
+
 ## 安装Node.js
+
+``` bash
+sudo apt install npm
+node -v
+npm -v
+```
+
 ## 安装HEXO
+``` bash
+hexo init
+npm install 
+
+```
 ## 配置NEXT主题
 ## 安装配置git
 # GitHub Page project
