@@ -67,8 +67,6 @@ Ubuntu 为例
 ## 准备工作
 
 - 更新系统
-  
-
 ``` bash
 sudo apt update
 sudo apt upgrade
@@ -99,11 +97,13 @@ npm -v
 ``` bash
 npm install -g hexo-cli
 ```
+
 - 初始化 Hexo, 注意一定在新目录下.
 ``` bash
 hexo init
 npm install 
 ```
+
 - 启动Hexo
 ```
 hexo d
