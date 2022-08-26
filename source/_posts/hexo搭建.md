@@ -107,6 +107,7 @@ npm install
 - 启动Hexo
 ```
 hexo d
+hexo s
 ```
 
 ## 配置NEXT主题
