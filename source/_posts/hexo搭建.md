@@ -65,7 +65,9 @@ C -->|Trave CI| D[Git Page 项目]
 Ubuntu 为例
 
 ## 准备工作
+
 - 更新系统
+  
 
 ``` bash
 sudo apt update
