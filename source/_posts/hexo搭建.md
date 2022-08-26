@@ -117,6 +117,56 @@ hexo s
 # VS Code on Windows
 
 # 恢复 Hexo on Linux
+
+Ubuntu 为例
+
+## 准备工作
+
+- 更新系统
+``` bash
+sudo apt update
+sudo apt upgrade
+```
+
+
+## 安装Node.js
+
+- 安装npm，依赖的node就自动安装了
+``` bash
+sudo apt install npm
+```
+
+- 安装后查看版本
+``` bash
+node -v
+npm -v
+```
+
+## git克隆应用恢复环境
+
+``` bash
+git clone https://github.com/lich-wang/nextblog.git
+cd nextblog
+npm install
+``` 
+
+## 授权GH_TOKEN
+在 https://github.com/settings/tokens 创建token
+
+``` bash
+nano ./.bashrc
+```
+最后一行添加
+``` bash
+export GH_TOKEN='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+```
+
+### 验证环境恢复OK
+``` bash
+cd ~/nextblog
+hexo d
+```
+
 # 恢复 VS Code on Windows
 
 ## 下载安装VS Code
