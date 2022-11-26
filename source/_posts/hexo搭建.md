@@ -222,4 +222,4 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDIlqewgvVeHx8b0+KrO7ucL2ynXNrIEq+isG07rYR2
 ```
 
 ## VS code 添加远程服务
-VS Code 安装 remote SSH 插件后,输入 ```   ssh pi@lich.tech -p 15001  ``` 连接服务器 
+VS Code 安装 remote SSH 插件后,输入 ```   ssh pi@lich.tech -p 15001  ``` 连接服务器
