@@ -104,7 +104,7 @@ scheme: Pisces
 #scheme: Gemini
 
 # Dark Mode
-darkmode: false
+darkmode: true
 
 
 # ---------------------------------------------------------------
@@ -123,6 +123,7 @@ menu:
   links: /links/ || sitemap
 #  categories: /categories/ || th
   archives: /archives/ || archive
+  calendar: /日志/ || calendar
 #  schedule: /schedule/ || calendar
 #  sitemap: /sitemap.xml || sitemap
 #  commonweal: /404/ || heartbeat
