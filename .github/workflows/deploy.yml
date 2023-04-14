@@ -18,7 +18,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: 14 # 设置 Node.js 版本，可以根据你的实际情况调整
+        node-version: 16 # 设置 Node.js 版本，可以根据你的实际情况调整
 
     - name: Cache dependencies
       uses: actions/cache@v2
