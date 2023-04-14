@@ -36,7 +36,7 @@ jobs:
 
     - name: Deploy
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
         git config --global user.name "lich-wang"
         git config --global user.email "lich.wang@gmail.com"
