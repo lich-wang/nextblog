@@ -5,69 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>英文字母舒尔特训练</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        table {
-            margin: 0 auto;
-            border-collapse: collapse;
-        }
-        td {
-            width: 100px;
-            height: 100px;
-            border: 1px solid #ccc;
-            text-align: center;
-            vertical-align: middle;
-            font-size: 24px;
-            position: relative;
-        }
-        .covered {
-            opacity: 0;
-            pointer-events: none;
-        }
+        body{font-family:Arial,sans-serif;text-align:center;}table{margin:0 auto;border-collapse:collapse;}td{width:100px;height:100px;border:1px solid #ccc;text-align:center;vertical-align:middle;font-size:24px;position:relative;}.covered{opacity:0;pointer-events:none;}#timer{font-size:24px;margin-top:20px;}
     </style>
 </head>
 <body>
     <h1>英文字母舒尔特训练</h1>
-    <table>
-    </table>
+    <table></table>
+    <div id="timer">已用时间：00:00</div>
     <script>
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXY';
-        const shuffledLetters = shuffleArray(letters.split('')).join('');
-        const tableSize = 5;
-        const table = document.querySelector('table');
-
-        for (let i = 0; i < tableSize; i++) {
-            const row = document.createElement('tr');
-            for (let j = 0; j < tableSize; j++) {
-                const cell = document.createElement('td');
-                cell.innerText = shuffledLetters[i * tableSize + j];
-                cell.addEventListener('click', onCellClick);
-                row.appendChild(cell);
-            }
-            table.appendChild(row);
-        }
-
-        let currentLetterIndex = 0;
-
-        function onCellClick(event) {
-            if (event.target.innerText === letters[currentLetterIndex]) {
-                event.target.classList.add('covered');
-                currentLetterIndex++;
-                if (currentLetterIndex === letters.length) {
-                    alert('恭喜！训练完成。');
-                }
-            }
-        }
+        function s(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}function uT(){let cT=new Date().getTime();let tE=Math.floor((cT-sT)/1000);let m=Math.floor(tE/60);let s=tE%60;timer.innerText=`已用时间：${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;}function oC(e){if(!tS){sT=new Date().getTime();tS=true;ti=setInterval(uT,1000);}if(e.target.innerText===l[c]){e.target.classList.add('covered');c++;if(c===l.length){clearInterval(ti);alert(`恭喜！训练完成。用时：${timer.innerText}`);location.reload();}}}let l='ABCDEFGHIJKLMNOPQRSTUVWXY';let sL=s(l.split('')).join('');let ts=5;let t=document.querySelector('table');for(let i=0;i<ts;i++){const r=document.createElement('tr');for(let j=0;j<ts;j++){const c=document.createElement('td');c.innerText=sL[i*ts+j];c.addEventListener('click',oC);r.appendChild(c);}t.appendChild(r);}let c=0;let timer=document.getElementById('timer');let sT,tS=false,ti;
     </script>
 </body>
 </html>
