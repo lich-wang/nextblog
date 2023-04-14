@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英文字母舒尔特训练</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+        td {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ccc;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 24px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>英文字母舒尔特训练</h1>
+    <table>
+    </table>
+    <script>
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXY';
+        const shuffledLetters = shuffleArray(letters.split('')).join('');
+        const tableSize = 5;
+        const table = document.querySelector('table');
+
+        for (let i = 0; i < tableSize; i++) {
+            const row = document.createElement('tr');
+            for (let j = 0; j < tableSize; j++) {
+                const cell = document.createElement('td');
+                cell.innerText = shuffledLetters[i * tableSize + j];
+                cell.addEventListener('click', onCellClick);
+                row.appendChild(cell);
+            }
+            table.appendChild(row);
+        }
+
+        let currentLetterIndex = 0;
+
+        function onCellClick(event) {
+            if (event.target.innerText === letters[currentLetterIndex]) {
+                event.target.classList.add('hidden');
+                currentLetterIndex++;
+                if (currentLetterIndex === letters.length) {
+                    alert('恭喜！训练完成。');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
