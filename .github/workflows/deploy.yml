@@ -1,6 +1,4 @@
 name: Deploy Hexo
-  env:
-    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 on:
   push:
@@ -38,7 +36,7 @@ jobs:
 
     - name: Deploy
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --global user.name "lich-wang"
         git config --global user.email "lich.wang@gmail.com"
