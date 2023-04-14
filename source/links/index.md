@@ -2,6 +2,9 @@
 title: 快捷方式
 date: 2022-08-23 03:17:29
 ---
+# Kid
+## 苏尔特方格
+https://blog.lich.tech/Letter/index.html
 
 # NAS
 
