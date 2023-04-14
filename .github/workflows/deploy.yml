@@ -1,6 +1,6 @@
 name: Deploy Hexo
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  env:
+    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 on:
   push:
