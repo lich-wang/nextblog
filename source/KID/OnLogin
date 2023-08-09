@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>onLogin Page</title>
+<script>
+  function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  }
+
+  function onLogin() {
+    var code = getParameterByName('code');
+    if (code) {
+      var appId = 'wx6e1d9a550358e1a7';
+      var secret = 'f0433033a311646ca3e37587e7cfd591';
+      var url = 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appId + '&secret=' + secret + '&js_code=' + code + '&grant_type=authorization_code';
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          // 处理返回的数据
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('An error occurred:', error);
+        });
+    }
+  }
+</script>
+</head>
+<body>
+<script>
+  onLogin();
+</script>
+</body>
+</html>
