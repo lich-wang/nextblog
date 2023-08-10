@@ -1,4 +1,4 @@
-image: node:10-alpine # use nodejs v10 LTS
+image: node:16-alpine # use nodejs v10 LTS
 cache:
   paths:
     - node_modules/
@@ -13,5 +13,3 @@ pages:
   artifacts:
     paths:
       - public
-  only:
-    - master
