@@ -5,5 +5,7 @@ tags: IaC
 ---
 
 {% plantuml %}
+``` plantuml
     Bob->Alice : hello
+```
 {% endplantuml %}
