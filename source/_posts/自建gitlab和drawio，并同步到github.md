@@ -4,7 +4,8 @@ date: 2024-05-08 12:49:54
 tags: IaC
 ---
 
-{% plantuml %}
+[//]: # ( {% plantuml %} )
+``` plantuml
 skinparam componentStyle rectangle
 cloud {
 cloud "let's encrypt" as le
@@ -62,7 +63,9 @@ gitlab-d->ssl
 
 cb-u->cf
 
-{% endplantuml %}
+```
+[//]: # ( {% endplantuml %} )
+
 
 
 <!-- draw.io diagram -->
