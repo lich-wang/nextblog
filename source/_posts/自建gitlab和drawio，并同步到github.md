@@ -4,7 +4,7 @@ date: 2024-05-08 12:49:54
 tags: IaC
 ---
 
-``` plantuml
+```plantuml
 @startuml
 
 skinparam componentStyle rectangle
