@@ -67,7 +67,7 @@ cb-u->cf
 
 ```
 
-<!-- more -->
+<!--more-->
 
 
 <!-- draw.io diagram -->
