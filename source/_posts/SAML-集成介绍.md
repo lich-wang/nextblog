@@ -5,10 +5,9 @@ tags:
 ---
 # 介绍
 ## SAML协议
-SAML( Security Assertion Markup Language)是一种标准化的身份认证协议，主要用于在不同的域（比如不同服务）之间安全地交换身份验证和授权数据。其技术文档可以在 [OASIS(结构化信息标准促进组织) ](https://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html)  查看。
+SAML( Security Assertion Markup Language)是一种标准化的身份认证协议，主要用于在不同的域（比如不同服务）之间安全地交换身份验证和授权数据。其技术文档可以在 [OASIS(结构化信息标准促进组织) ](https://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html)网站查看。
 
 简要流程如下：
-
 ```plantuml
 @startuml
 left to right direction
@@ -29,11 +28,11 @@ user -->sp: 5.用户登录到SP
 <!--more-->
 
 ## SAML协议中的概念
-### SP (Service Provider)
+### SP(Service Provider)
 服务提供商（SP）是一个提供服务的实体，比如一个网站或应用。用户希望通过SP访问资源。在SAML身份认证过程中，SP是请求和接收关于用户身份信息的一方。
-### IDP (Identity Provider)
+### IDP(Identity Provider)
 身份提供商（IDP）是负责认证用户身份并将这些信息提供给服务提供商的系统。在SAML流程中，当用户试图登录服务提供商提供的服务时，IDP负责验证用户的身份，并向SP发送断言来确认这一身份。
-### Metadata（元数据）
+### Metadata元数据）
 在SAML中，元数据是用来描述IDP（身份提供商）和SP（服务提供商）的配置信息的XML文档。它包括了以下几类重要信息：
 
 * 实体描述符：标识实体（IDP或SP）并包括关于实体的信息，如实体ID和服务位置。
@@ -82,7 +81,8 @@ agent->sp:follow Redirect
 sp->sp:Validate Assertions
 agent<-sp:Authorize User and Provide Service
 @enduml
-
+```
+```plantuml
 @startuml
 title SP Initiated SAML Logout with IAM System
 
@@ -105,11 +105,15 @@ agent<-sp:Loutgout user and show Logout content
 ```
 # 验证
 
-为了能够方便的验证SAML协议，我们这里使用keycloak的Docker镜像作为IDP，使用WordPress镜像作为SP，来模拟SAML登陆流程，在实际生产情况中，应该根据实际情况配置和准备环境。
+为了能够方便的验证SAML协议，我们这里使用Docker来搭建环境，keycloak的作为IDP，WordPress作为SP，用来演示SAML登陆流程。在生产环境下，应该根据实际情况配置和准备环境。
 ## 准备Docker镜像
-准备docker-compose，并创建sp和idp需要的路径。
-   - 参考https://docs.docker.com/compose/install/ 安装你的docker-compose环境,安装完成后使用```docker-compose```检查docker-compose安装成功
-   - 创建一个demoiam文件夹按照下面结构创建好文件，也可以直接到https://github.com/lich-wang/demoiam 获取
+准备docker-compose，并创建sp和idp需要的相关文件。
+   - 参考https://docs.docker.com/compose/install/ 安装你的docker-compose环境,安装完成后使用```docker-compose -v```检查docker-compose是否安装成功
+     ```bash
+     $ sudo docker-compose -v
+     docker-compose version 1.29.2, build unknown
+     ```
+   - 创建一个demoiam文件夹,按照下面结构创建文件，也可以直接从 https://github.com/lich-wang/demoiam 获取配置好的文件
      ```bash
      $ tree ~/demoiam/
         demoiam/
@@ -237,4 +241,4 @@ agent<-sp:Loutgout user and show Logout content
     - 在IDP登录页输入之前配置的用户名```test1```密码```test1```并登录
     - 在IDP登录重置初始密码为```test2```
     - 页面跳回SP，并登录成功
-  - 点击地址栏右侧扩展图标，点击打开```SAMLTrace```查看相关SAML请求
+  - 点击地址栏右侧扩展图标，点击打开```SAMLTrace```可以查看相关SAML请求
