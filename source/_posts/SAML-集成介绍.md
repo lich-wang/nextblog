@@ -5,7 +5,7 @@ tags:
 ---
 # 介绍
 ## SAML协议
-SAML( Security Assertion Markup Language)是一种标准化的身份认证协议，主要用于在不同的域（比如不同服务）之间安全地交换身份验证和授权数据。其技术文档可以在 [OASIS(结构化信息标准促进组织) ](https://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html)网站查看。
+SAML( Security Assertion Markup Language)是一种标准化的身份认证协议，主要用于在不同的域（比如不同服务）之间安全地交换身份验证和授权数据。其技术文档可以在 [OASIS(结构化信息标准促进组织) ](https://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html)官方网站查看。
 
 简要流程如下：
 ```plantuml
@@ -20,8 +20,8 @@ rectangle "IAM System (IDP)" as idp
 user --> sp: 1. 用户访问SP
 sp ..> user: 2. SP重新定向用户到IDP
 user -->idp: 3. 用户在IDP完成鉴权
-idp ..>user: 4.IDP重新定向用户回到SP
-user -->sp: 5.用户登录到SP
+idp ..>user: 4. IDP重新定向用户回到SP
+user -->sp: 5. 用户登录到SP
 @enduml
 ```
 
@@ -32,7 +32,7 @@ user -->sp: 5.用户登录到SP
 服务提供商（SP）是一个提供服务的实体，比如一个网站或应用。用户希望通过SP访问资源。在SAML身份认证过程中，SP是请求和接收关于用户身份信息的一方。
 ### IDP(Identity Provider)
 身份提供商（IDP）是负责认证用户身份并将这些信息提供给服务提供商的系统。在SAML流程中，当用户试图登录服务提供商提供的服务时，IDP负责验证用户的身份，并向SP发送断言来确认这一身份。
-### Metadata元数据）
+### Metadata（元数据）
 在SAML中，元数据是用来描述IDP（身份提供商）和SP（服务提供商）的配置信息的XML文档。它包括了以下几类重要信息：
 
 * 实体描述符：标识实体（IDP或SP）并包括关于实体的信息，如实体ID和服务位置。
@@ -91,7 +91,7 @@ participant "User Agent( Browser)" as agent#lightgreen
 participant "Web Application (SP)" as sp#powderblue
 participant "IAM System (IDP)" as iam2#orange
 
-user->agent:Implied Logout to the web Application
+user->agent:Initiate Logout to the web Application
 agent->sp:Redirect to Application(SP)
 sp->agent:Redirect User
 agent->iam2:Via SP Initalted SAML Logout Request
