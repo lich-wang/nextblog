@@ -132,14 +132,14 @@ agent<-sp:Loutgout user and show Logout content
 
 * 创建一个demoiam文件夹,按照下面结构创建文件，也可以直接从 <https://github.com/lich-wang/demoiam> 获取配置好的文件
 
-     ```bash
-     $ tree ~/demoiam/
-        demoiam/
-        ├── testidp
-        │   └── docker-compose.yml
-        └── testsp
-            └── docker-compose.yml
-     ```
+  ```bash
+  $ tree ~/demoiam/
+    demoiam/
+    ├── testidp
+    │   └── docker-compose.yml
+    └── testsp
+        └── docker-compose.yml
+  ```
 
   * 配置testidp/docker-compose.yml 如下
 
