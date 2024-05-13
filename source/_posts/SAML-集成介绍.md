@@ -3,7 +3,6 @@ title: SAML 集成介绍
 date: 2024-05-10 12:59:06
 tags:
 ---
-# SAML 集成介绍
 
 ## 介绍
 
@@ -66,7 +65,7 @@ SAML断言是由IDP创建并发送给SP的一种消息，它包含了验证用�
 
 在实际应用中，当用户尝试访问SP的资源时，SP会将用户重定向到IDP进行身份验证。用户在IDP成功认证后，IDP会创建一个SAML断言，包含用户的身份和属性信息，并将其发送回SP。SP接收到断言后，会验证断言的签名，确认其来自可信的IDP，并根据断言中的信息决定是否授权用户访问请求的资源。
 
-# 流程图
+## 流程图
 
 ```plantuml
 @startuml
@@ -116,11 +115,11 @@ agent<-sp:Loutgout user and show Logout content
 @enduml
 ```
 
-# 验证
+## 验证
 
 为了便于验证 SAML 协议，我们将使用 Docker 来搭建环境，keycloak的作为IDP，WordPress作为SP，用来演示SAML登陆流程。在生产环境下，应该根据实际情况配置和准备环境。
 
-## 准备Docker镜像
+### 准备Docker镜像
 
 准备docker-compose，并创建sp和idp需要的相关文件。
 
@@ -144,61 +143,61 @@ agent<-sp:Loutgout user and show Logout content
 
   * 配置testidp/docker-compose.yml 如下
 
-        ```yml
-        version: '3'
-        services:
-        keycloak:
-            image: keycloak/keycloak
-            ports:
-            - "20000:8080"
-            environment:
-            KEYCLOAK_ADMIN: admin
-            KEYCLOAK_ADMIN_PASSWORD: admin
-            command:
-            - start-dev
-            volumes:
-            - keycloak_data:/opt/jboss/keycloak/standalone/data
+  ```yml
+  version: '3'
+  services:
+  keycloak:
+      image: keycloak/keycloak
+      ports:
+      - "20000:8080"
+      environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      command:
+      - start-dev
+      volumes:
+      - keycloak_data:/opt/jboss/keycloak/standalone/data
 
-        volumes:
-        keycloak_data:
-        ```
+  volumes:
+  keycloak_data:
+  ```
 
   * 配置testspdocker-compose.yml 如下
 
-        ```yml
-        version: '3'
-        services:
+   ```yml
+  version: '3'
+  services:
 
-        wordpress:
-            image: wordpress
-            restart: always
-            ports:
-            - 20001:80
-            environment:
-            WORDPRESS_DB_HOST: db
-            WORDPRESS_DB_USER: exampleuser
-            WORDPRESS_DB_PASSWORD: examplepass
-            WORDPRESS_DB_NAME: exampledb
-            volumes:
-            - wordpress:/var/www/html
+  wordpress:
+      image: wordpress
+      restart: always
+      ports:
+      - 20001:80
+      environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+      volumes:
+      - wordpress:/var/www/html
 
-        db:
-            image: mysql:8.0
-            restart: always
-            environment:
-            MYSQL_DATABASE: exampledb
-            MYSQL_USER: exampleuser
-            MYSQL_PASSWORD: examplepass
-            MYSQL_RANDOM_ROOT_PASSWORD: '1'
-            volumes:
-            - db:/var/lib/mysql
+  db:
+      image: mysql:8.0
+      restart: always
+      environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      volumes:
+      - db:/var/lib/mysql
 
-        volumes:
-        wordpress:
-        db:
-        ```
+  volumes:
+  wordpress:
+  db:
+   ```
 
-## 初始化IDP
+### 初始化IDP
 
 * 进入IDP路径，启动环境
 
@@ -221,7 +220,7 @@ agent<-sp:Loutgout user and show Logout content
 * 导出IDP的SAML元数据
   在左侧导航栏点击```Realm Settings```下划到最后,右键点击```SAML 2.0 Identity Provider Metadata```另存链接为IDP.xml
 
-## 初始化SP
+### 初始化SP
 
 * 进入IDP路径，启动环境
 
@@ -244,7 +243,7 @@ agent<-sp:Loutgout user and show Logout content
     * 刷新页面页面后,在左侧导航栏新出现的```SAML Single Sign On – SSO Login```下点击```Service Provider Metadata```页签
     * 点击```Metadata XML File``` 下的```DownLoad```下载SP元数据，并将下载后的文件修改为```sp.xml```
 
-## 配置SAML元数据
+### 配置SAML元数据
 
 * SP 导入IDP元数据
   * 打开 <http://localhost:20001/> 用之前设置用户名```admin```密码```w0rd@Press```登陆
@@ -258,7 +257,7 @@ agent<-sp:Loutgout user and show Logout content
   * 点击左侧```Clients```页签，选择```Import client```
     * 在```Resource file```右侧点击```Browse...```选择之前下载的```sp.xml```,后点击```Save```。
 
-## 使用SAMLTrace进行调试跟踪
+### 使用SAMLTrace进行调试跟踪
 
 为方便后续调整，这里举例使用Edge浏览器并安装SAMLTrace扩展，使用隐私模式进行SAML验证
 
