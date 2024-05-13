@@ -274,4 +274,3 @@ agent<-sp:Loutgout user and show Logout content
     * 在IDP登录重置初始密码为```test2```
     * 页面跳回SP，并登录成功
   * 点击地址栏右侧扩展图标，点击打开```SAMLTrace```可以查看相关SAML请求
-![alt text](SAML-集成介绍/image.png)
