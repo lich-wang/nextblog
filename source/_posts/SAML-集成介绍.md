@@ -105,7 +105,7 @@ agent<-sp:Loutgout user and show Logout content
 ```
 # 验证
 
-为了能够方便的验证SAML协议，我们这里使用Docker来搭建环境，keycloak的作为IDP，WordPress作为SP，用来演示SAML登陆流程。在生产环境下，应该根据实际情况配置和准备环境。
+为了便于验证 SAML 协议，我们将使用 Docker 来搭建环境，keycloak的作为IDP，WordPress作为SP，用来演示SAML登陆流程。在生产环境下，应该根据实际情况配置和准备环境。
 ## 准备Docker镜像
 准备docker-compose，并创建sp和idp需要的相关文件。
    - 参考https://docs.docker.com/compose/install/ 安装你的docker-compose环境,安装完成后使用```docker-compose -v```检查docker-compose是否安装成功
@@ -186,6 +186,7 @@ agent<-sp:Loutgout user and show Logout content
   ```
 - 进入控制台，创建一个新用户
   - 打开 http://localhost:20000/ 输入 用户名```admin```密码```admin```，进入控制台
+  
   - 从左侧导航进入```Users```页面，点击```Add User```创建一个新用户
     - 在```Username```后输入用户名```test1```，点击```Create```创建用户
     - 创建成功后，点击```test1```用户的```credentials```标签，点击```Set Password``` 为用户创建密码
@@ -242,3 +243,5 @@ agent<-sp:Loutgout user and show Logout content
     - 在IDP登录重置初始密码为```test2```
     - 页面跳回SP，并登录成功
   - 点击地址栏右侧扩展图标，点击打开```SAMLTrace```可以查看相关SAML请求
+
+![2024-05-13T181656](\images\SAML-集成介绍\2024-05-13T181656.png)`
