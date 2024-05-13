@@ -30,6 +30,9 @@ jobs:
 
     - name: Install dependencies
       run: npm ci
+      
+    - name: Copy modified renderer
+      run: cp hack/renderer.js node_modules/hexo-renderer-marked/lib/
 
     - name: Build
       run: npx hexo generate
