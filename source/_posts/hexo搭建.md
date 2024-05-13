@@ -1,5 +1,7 @@
 ---
 title: Github Page, Hexo, Travis CI, VS Cdoe 最佳实践
+date: 2024-01-08 12:49:54
+tags: IaC
 ---
 # 介绍
 
