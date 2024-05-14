@@ -1022,18 +1022,22 @@ plantuml:
 
 giscus:
   enable: true
-  repo: nextblog-comment # Github repository name
-  repo_id: R_kgDOL7O9Hg# Github repository id
-  category: "Announcements" # Github discussion category
-  category_id:"DIC_kwDOL7O9Hs4CfWEw" # Github discussion category id
+  # Github repository name
+  repo: nextblog-comment 
+  # Github repository id
+  repo_id: R_kgDOL7O9Hg 
+  # Github discussion category
+  category: "Announcements" 
+  # Github discussion category id
+  category_id: "DIC_kwDOL7O9Hs4CfWEw"
   # Available values: pathname | url | title | og:title
   mapping: pathname
   # Available values: 0 | 1
-  reactions_enabled: 1
+  reactions_enabled: 0
    # Available values: 0 | 1
-  emit_metadata: 1
+  emit_metadata: 0
   # Available values: light | dark | dark_high_contrast | transparent_dark | preferred-color-scheme
-  theme: light
+  theme: preferred-color-scheme
   # Available values: en | zh-CN
   lang: zh-CN
   # Place the comment box above the comments
