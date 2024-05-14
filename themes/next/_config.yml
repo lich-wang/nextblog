@@ -1019,3 +1019,24 @@ plantuml:
 
   # class-name for element style. The default style is center-aligned block
   className: "plantuml"
+
+giscus:
+  enable: true
+  repo: nextblog-comment # Github repository name
+  repo_id: R_kgDOL7O9Hg# Github repository id
+  category: "Announcements" # Github discussion category
+  category_id:"DIC_kwDOL7O9Hs4CfWEw" # Github discussion category id
+  # Available values: pathname | url | title | og:title
+  mapping: pathname
+  # Available values: 0 | 1
+  reactions_enabled: 1
+   # Available values: 0 | 1
+  emit_metadata: 1
+  # Available values: light | dark | dark_high_contrast | transparent_dark | preferred-color-scheme
+  theme: light
+  # Available values: en | zh-CN
+  lang: zh-CN
+  # Place the comment box above the comments
+  input_position: bottom
+  # Load the comments lazily
+  loading: lazy
