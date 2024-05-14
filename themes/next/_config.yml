@@ -1021,7 +1021,7 @@ plantuml:
   className: "plantuml"
 
 giscus:
-  enable: true
+  enable: false
   # Github repository name
   repo: nextblog-comment 
   # Github repository id
