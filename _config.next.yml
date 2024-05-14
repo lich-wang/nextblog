@@ -967,7 +967,7 @@ giscus:
   # Available values: pathname | url | title | og:title
   mapping: pathname
   # Available values: 0 | 1
-  reactions_enabled: 0
+  reactions_enabled: 1
    # Available values: 0 | 1
   emit_metadata: 0
   # Available values: light | dark | dark_high_contrast | transparent_dark | preferred-color-scheme
@@ -977,4 +977,4 @@ giscus:
   # Place the comment box above the comments
   input_position: bottom
   # Load the comments lazily
-  loading: lazy
+  # loading: lazy
