@@ -211,14 +211,20 @@ agent<-sp:Loutgout user and show Logout content
 
 * 进入控制台，创建一个新用户
   * 打开 <http://localhost:20000/> 输入 用户名```admin```密码```admin```，进入控制台
-  
+  ![login](SAML-集成介绍/image-1.png)
   * 从左侧导航进入```Users```页面，点击```Add User```创建一个新用户
+  ![add user](SAML-集成介绍/image-2.png)
     * 在```Username```后输入用户名```test1```，点击```Create```创建用户
+    ![creat user](SAML-集成介绍/image-3.png)
     * 创建成功后，点击```test1```用户的```credentials```标签，点击```Set Password``` 为用户创建密码
+    ![set password](SAML-集成介绍/image-4.png)
     * 在```Password```和```Password confirmation```分别输入```test1```作为密码,然后点击```Save```为用户保存密码
+    ![finish passwrod](SAML-集成介绍/image-5.png)
+    ![finish passwrod](SAML-集成介绍/image-6.png)
 
 * 导出IDP的SAML元数据
   在左侧导航栏点击```Realm Settings```下划到最后,右键点击```SAML 2.0 Identity Provider Metadata```另存链接为IDP.xml
+  ![export idp xml](SAML-集成介绍/image-7.png)
 
 ### 初始化SP
 
@@ -236,26 +242,38 @@ agent<-sp:Loutgout user and show Logout content
 
 * 完成SP 初始化，并启用SAML集成
   * 打开 <http://localhost:20001/> 选择语言```简体中文```后,点击```继续``完成配置
+  ![inital sp](SAML-集成介绍/image-8.png)
   * 设置用户名```admin```密码```w0rd@Press```邮箱```admin@admin.com```后，点击```安装WordPress```
+  ![inital sp](SAML-集成介绍/image-9.png)
   * 点击登陆，在登陆页面输入刚才设置的用户名```admin```密码```w0rd@Press```后，点击```登陆```
+  ![login sp](SAML-集成介绍/image-10.png)
+  ![login sp](SAML-集成介绍/image-11.png)
   * 登陆后,添加SAML插件启用SAML登陆
     * 点击左侧导航页```插件```下的```添加插件```，在右侧搜索输入```SAML```选择```SAML Single Sign On – SSO Login```安装，并```启用```
+    ![enable saml](SAML-集成介绍/image-12.png)
+    ![enable saml](SAML-集成介绍/image-13.png)
     * 刷新页面页面后,在左侧导航栏新出现的```SAML Single Sign On – SSO Login```下点击```Service Provider Metadata```页签
+    ![export sp xml](SAML-集成介绍/image-14.png)
     * 点击```Metadata XML File``` 下的```DownLoad```下载SP元数据，并将下载后的文件修改为```sp.xml```
 
 ### 配置SAML元数据
 
 * SP 导入IDP元数据
-  * 打开 <http://localhost:20001/> 用之前设置用户名```admin```密码```w0rd@Press```登陆
+  * 打开 <http://localhost:20001/wp-admin> 用之前设置用户名```admin```密码```w0rd@Press```登陆
+  ![improt idp xml](SAML-集成介绍/image-15.png)
   * 从左侧导航栏的```SAML Single Sign On – SSO Login```进入```Service Provider Setup```页签
   * 在```Configure Service Provider```下选择```Upload IDP Metadata```
     * ```Identity Provider Name :```输入```testidp```
     * ```Upload Metadata :```选择之前下的```idp.xml```
     * 点击```upload```上传
+    ![improt idp xml](SAML-集成介绍/image-16.png)
 * IDP导入SP元数据
   * 打开 <http://localhost:20000/> 输入 用户名```admin```密码```admin```，进入控制台
+  ![import sp xml](SAML-集成介绍/image-17.png)
   * 点击左侧```Clients```页签，选择```Import client```
+  ![import sp xml](SAML-集成介绍/image-18.png)
     * 在```Resource file```右侧点击```Browse...```选择之前下载的```sp.xml```,后点击```Save```。
+    ![import sp xml](SAML-集成介绍/image-19.png)
 
 ### 使用SAMLTrace进行调试跟踪
 
@@ -264,13 +282,22 @@ agent<-sp:Loutgout user and show Logout content
 * 安装SAMLTrace
   * 用Edge浏览器打开 <https://microsoftedge.microsoft.com/addons>
   * 搜索```saml tracer```,并安装搜索到的```SAML, WS-Federation and OAuth 2.0 tracer```
+  ![install addon](SAML-集成介绍/image-20.png)
   * 在Edge浏览器打开[edge://extensions/](edge://extensions/)，选择```SAML, WS-Federation and OAuth 2.0 tracer```的```详细信息```
+  ![install addon](SAML-集成介绍/image-22.png)
     -勾选 ```在 InPrivate 中允许```
+    ![install addon](SAML-集成介绍/image-21.png)
 * 使用Edge的隐私模式进行SAML验证
   * 在Edge浏览器右侧```...```设置列表内找到```新建Inprivate窗口```或者按下快捷键```Ctrl+Shift+N```
-  * 在隐私模式下访问 <http://localhost:20001/wp-login.php，并点击> ```Login with testdip```
+  * 在隐私模式下访问 <http://localhost:20001/wp-login.php> ，并点击 ```Login with testdip```
+  ![test login](SAML-集成介绍/image-23.png)
     * 页面跳转到 IDP登录页面
     * 在IDP登录页输入之前配置的用户名```test1```密码```test1```并登录
+    ![test login](SAML-集成介绍/image-24.png)
     * 在IDP登录重置初始密码为```test2```
+    ![test login](SAML-集成介绍/image-25.png)
     * 页面跳回SP，并登录成功
+    ![test login](SAML-集成介绍/image-26.png)
   * 点击地址栏右侧扩展图标，点击打开```SAMLTrace```可以查看相关SAML请求
+  ![check log](SAML-集成介绍/image-27.png)
+  ![check log](SAML-集成介绍/image-29.png)
