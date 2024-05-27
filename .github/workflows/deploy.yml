@@ -34,13 +34,8 @@ jobs:
     - name: Copy modified renderer
       run: cp hack/renderer.js node_modules/hexo-renderer-marked/lib/
 
-    - name: Install retry-cli
-      run: npm install -g @lifeomic/cli-retry
-
-    - name: Build with retry
-      run: retry -t 3 -d 5 npx hexo generate
-
-
+    - name: Build
+      run: npx hexo generate
 
     - name: Deploy
       env:
