@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "E7W6597ZYH.com.test.testlogin",
+                "paths": ["/app/*"]
+            }
+        ]
+    }
+}
