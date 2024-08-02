@@ -49,7 +49,9 @@ remote_port = 222
 ```
 
 ### Github
-
+``` bash
+git config --global user.email "lich.wang@gmail.com"
+```
 ## 影音服务
 
 ## 博客
