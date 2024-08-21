@@ -20,16 +20,17 @@
         }
         table {
             border-collapse: collapse;
-            width: 95vw; /* 减小留空，几乎充满屏幕 */
-            height: 95vw; /* 增加表格高度 */
+            width: fit-content; /* 自动适应内容宽度 */
+            max-width: 95vw; /* 最多占用95%的屏幕宽度 */
+            height: 90vh; /* 占用90%的屏幕高度 */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 3vw; /* 根据屏幕宽度调整字体大小 */
         }
         td {
             border: 1px solid #ddd;
-            padding: 1vh; /* 减少单元格填充 */
+            padding: 1vh;
             text-align: center;
-            font-size: 4.5vw; /* 字体更大 */
         }
         tr:nth-child(even) {
             background-color: #f2f2f2;
@@ -38,12 +39,13 @@
             background-color: #ddd;
         }
         .description {
-            width: 95vw; /* 减少留空，几乎充满屏幕 */
+            width: 95vw; /* 与表格宽度对齐 */
+            height: 5vh; /* 占用5%的屏幕高度 */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 1vh; /* 减少填充 */
+            padding: 1vh;
             text-align: center;
-            font-size: 3.5vw; /* 更大的说明文字 */
+            font-size: 2.5vw; /* 适应屏幕的字体大小 */
             margin-top: 1vh;
         }
     </style>
