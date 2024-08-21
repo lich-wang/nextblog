@@ -20,17 +20,15 @@
         }
         table {
             border-collapse: collapse;
-            width: fit-content; /* 自动适应内容宽度 */
-            max-width: 95vw; /* 最多占用95%的屏幕宽度 */
-            height: 90vh; /* 占用90%的屏幕高度 */
+            width: 95vw; /* 占用95%的屏幕宽度 */
+            height: 85vh; /* 占用85%的屏幕高度 */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            font-size: 3vw; /* 根据屏幕宽度调整字体大小 */
         }
         td {
             border: 1px solid #ddd;
-            padding: 1vh;
             text-align: center;
+            padding: 0;
         }
         tr:nth-child(even) {
             background-color: #f2f2f2;
@@ -43,15 +41,15 @@
             height: 5vh; /* 占用5%的屏幕高度 */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 1vh;
+            padding: 0;
             text-align: center;
-            font-size: 2.5vw; /* 适应屏幕的字体大小 */
+            font-size: 2vh; /* 适应屏幕的字体大小 */
             margin-top: 1vh;
         }
     </style>
 </head>
 <body>
-    <table role="table">
+    <table role="table" id="priceTable">
         <thead>
             <tr>
                 <th scope="col">商品</th>
@@ -96,5 +94,22 @@
     <div class="description">
         我们使用的是可再生的PLA材料打印，来源于玉米和甘蔗。请小心使用活动关节，避免大力操作。
     </div>
+
+    <script>
+        function adjustFontSize() {
+            const table = document.getElementById('priceTable');
+            const rows = table.getElementsByTagName('tr');
+            const tableHeight = table.clientHeight;
+            const rowCount = rows.length;
+            const fontSize = (tableHeight / rowCount) * 0.5; // 根据行数和表格高度计算字体大小
+
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].style.fontSize = `${fontSize}px`;
+            }
+        }
+
+        window.onload = adjustFontSize;
+        window.onresize = adjustFontSize;
+    </script>
 </body>
 </html>
