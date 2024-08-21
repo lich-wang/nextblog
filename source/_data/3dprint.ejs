@@ -1,0 +1,21 @@
+<%- partial('head') %>
+
+<div class="page-content">
+  <h1><%= page.title %></h1>
+  <div class="product-info">
+    <p><strong>Size:</strong> <%= page.size %></p>
+    <p><strong>Description:</strong> <%= page.description %></p>
+    <img src="<%= page.image %>" alt="<%= page.title %>" />
+  </div>
+</div>
+
+<div class="navigation">
+  <% if (page.prev) { %>
+    <a href="<%= url_for(page.prev.path) %>">Previous</a>
+  <% } %>
+  <% if (page.next) { %>
+    <a href="<%= url_for(page.next.path) %>">Next</a>
+  <% } %>
+</div>
+
+<%- partial('foot') %>
