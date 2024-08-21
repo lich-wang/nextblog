@@ -16,20 +16,20 @@
             align-items: center;
             width: 100vw;
             height: 100vh;
-            font-size: 2.5vw; /* 根据屏幕宽度自适应字体大小 */
             transform: rotate(180deg); /* 整个页面上下颠倒 */
         }
         table {
             border-collapse: collapse;
-            width: 80vw; /* 表格宽度相对于视口宽度 */
+            width: 90vw; /* 表格宽度相对于视口宽度 */
+            height: 60vh; /* 表格高度相对于视口高度 */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2vh;
         }
         td {
             border: 1px solid #ddd;
-            padding: 2vh; /* 单元格填充相对于视口高度 */
+            padding: 1.5vh; /* 单元格填充相对于视口高度 */
             text-align: center;
+            font-size: 3.5vw; /* 字体大小相对于视口宽度 */
         }
         tr:nth-child(even) {
             background-color: #f2f2f2;
@@ -38,12 +38,13 @@
             background-color: #ddd;
         }
         .description {
-            width: 80vw;
+            width: 90vw;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 2vh;
             text-align: center;
-            font-size: 1.5vw; /* 说明文字也自适应 */
+            font-size: 2.5vw; /* 说明文字的字体大小也调整 */
+            margin-top: 2vh;
         }
     </style>
 </head>
