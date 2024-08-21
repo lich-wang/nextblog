@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= page.title %></title>
+    <title><%= config.title %></title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,20 +37,20 @@
 </head>
 <body>
     <div class="page-content">
-        <h1><%= page.title %></h1>
+        <h1><%= config.title %></h1>
         <div class="product-info">
-            <p><strong>Size:</strong> <%= page.size %></p>
-            <p><strong>Description:</strong> <%= page.description %></p>
-            <img src="<%= page.image %>" alt="<%= page.title %>">
+            <p><strong>Size:</strong> <%= config.size %></p>
+            <p><strong>Description:</strong> <%= config.description %></p>
+            <img src="<%= config.image %>" alt="<%= config.title %>">
         </div>
     </div>
 
     <div class="navigation">
-        <% if (page.prev) { %>
-            <a href="<%= url_for(page.prev.path) %>">Previous</a>
+        <% if (config.prev) { %>
+            <a href="<%= url_for(config.prev) %>">Previous</a>
         <% } %>
-        <% if (page.next) { %>
-            <a href="<%= url_for(page.next.path) %>">Next</a>
+        <% if (config.next) { %>
+            <a href="<%= url_for(config.next) %>">Next</a>
         <% } %>
     </div>
 </body>
