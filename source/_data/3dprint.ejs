@@ -1,57 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= config.title %></title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .page-content {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .product-info {
-            margin-top: 20px;
-        }
-        .product-info img {
-            max-width: 100%;
-            height: auto;
-        }
-        .navigation {
-            margin-top: 30px;
-        }
-        .navigation a {
-            margin-right: 10px;
-            text-decoration: none;
-            color: #007bff;
-        }
-    </style>
-</head>
-<body>
+<%- partial('_partials/head') %>
+<%- partial('_partials/header') %>
+
+<div class="main-content">
     <div class="page-content">
-        <h1><%= config.title %></h1>
+        <h1><%= page.title %></h1>
         <div class="product-info">
-            <p><strong>Size:</strong> <%= config.size %></p>
-            <p><strong>Description:</strong> <%= config.description %></p>
-            <img src="<%= config.image %>" alt="<%= config.title %>">
+            <p><strong>Size:</strong> <%= page.size %></p>
+            <p><strong>Description:</strong> <%= page.description %></p>
+            <img src="<%= page.image %>" alt="<%= page.title %>">
         </div>
     </div>
 
     <div class="navigation">
-        <% if (config.prev) { %>
-            <a href="<%= url_for(config.prev) %>">Previous</a>
+        <% if (page.prev) { %>
+            <a href="<%= url_for(page.prev.path) %>">Previous</a>
         <% } %>
-        <% if (config.next) { %>
-            <a href="<%= url_for(config.next) %>">Next</a>
+        <% if (page.next) { %>
+            <a href="<%= url_for(page.next.path) %>">Next</a>
         <% } %>
     </div>
-</body>
-</html>
+</div>
+
+<%- partial('_partials/footer') %>
