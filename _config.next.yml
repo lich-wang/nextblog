@@ -978,3 +978,6 @@ giscus:
   input_position: bottom
   # Load the comments lazily
   # loading: lazy
+theme_config:
+  custom_layouts:
+    3dprint: source/_layout/3dprint.ejs
