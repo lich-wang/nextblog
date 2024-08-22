@@ -20,16 +20,19 @@
         }
         table {
             border-collapse: collapse;
-            width: 95vw; /* 减小留空，几乎充满屏幕 */
-            height: 95vw; /* 增加表格高度 */
+            width: 95vw; /* 占用95%的屏幕宽度 */
+            height: 95vw; /* 占用95%的屏幕高度 */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th {
+            font-size: 4.5vw; /* 标题列字体大小固定 */
+            padding: 1vh;
         }
         td {
             border: 1px solid #ddd;
             padding: 1vh; /* 减少单元格填充 */
             text-align: center;
-            font-size: 4.5vw; /* 字体更大 */
         }
         tr:nth-child(even) {
             background-color: #f2f2f2;
@@ -38,18 +41,18 @@
             background-color: #ddd;
         }
         .description {
-            width: 95vw; /* 减少留空，几乎充满屏幕 */
+            width: 95vw; /* 占用95%的屏幕宽度 */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 1vh; /* 减少填充 */
             text-align: center;
-            font-size: 3.5vw; /* 更大的说明文字 */
+            font-size: 3.5vw; /* 说明文字字体大小固定 */
             margin-top: 1vh;
         }
     </style>
 </head>
 <body>
-    <table role="table">
+    <table role="table" id="priceTable">
         <thead>
             <tr>
                 <th scope="col">商品</th>
@@ -94,5 +97,23 @@
     <div class="description">
         我们使用的是可再生的PLA材料打印，来源于玉米和甘蔗。请小心使用活动关节，避免大力操作。
     </div>
+
+    <script>
+        function adjustFontSize() {
+            const table = document.getElementById('priceTable');
+            const rows = table.getElementsByTagName('tr');
+            const tableHeight = table.clientHeight;
+            const rowCount = rows.length;
+            const availableHeight = tableHeight - rows[0].clientHeight; // 减去标题行高度
+            const fontSize = (availableHeight / (rowCount - 1)) * 0.5; // 根据行数和表格可用高度计算字体大小
+
+            for (let i = 1; i < rows.length; i++) { // 从第二行开始调整
+                rows[i].style.fontSize = `${fontSize}px`;
+            }
+        }
+
+        window.onload = adjustFontSize;
+        window.onresize = adjustFontSize;
+    </script>
 </body>
 </html>
