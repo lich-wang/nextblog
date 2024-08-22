@@ -13,7 +13,7 @@
             overflow: hidden; /* 防止滚动条出现 */
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* 确保内容从顶部开始 */
+            justify-content: flex-start;
             align-items: center;
             transform: rotate(180deg); /* 整个页面上下颠倒 */
         }
@@ -24,7 +24,7 @@
             height: 88vh; /* 占用88%的屏幕高度 */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 0; /* 确保表格没有额外的空白 */
+            margin: 0;
         }
 
         td {
@@ -49,8 +49,8 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 0;
             text-align: center;
-            font-size: 4vh; /* 适应屏幕的字体大小 */
             margin: 0;
+            overflow: hidden; /* 防止说明文字超出容器 */
         }
     </style>
 </head>
@@ -97,7 +97,7 @@
             </tr>
         </tbody>
     </table>
-    <div class="description">
+    <div class="description" id="description">
         我们使用的是可再生的PLA材料打印，来源于玉米和甘蔗。请小心使用活动关节，避免大力操作。
     </div>
 
@@ -112,6 +112,12 @@
             for (let i = 0; i < rows.length; i++) {
                 rows[i].style.fontSize = `${fontSize}px`;
             }
+
+            // 调整说明文字的字体大小
+            const description = document.getElementById('description');
+            const descriptionHeight = description.clientHeight;
+            const descriptionFontSize = descriptionHeight * 0.5; // 根据说明区域高度计算字体大小
+            description.style.fontSize = `${descriptionFontSize}px`;
         }
 
         window.onload = adjustFontSize;
