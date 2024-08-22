@@ -5,56 +5,51 @@
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
     <title>商品价格表</title>
     <style>
-        html, body {
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden; /* 防止滚动条出现 */
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
+            width: 100vw;
+            height: 100vh;
             transform: rotate(180deg); /* 整个页面上下颠倒 */
         }
-
         table {
             border-collapse: collapse;
-            width: 98vw; /* 占用98%的屏幕宽度 */
-            height: 88vh; /* 占用88%的屏幕高度 */
+            width: 95vw; /* 减小留空，几乎充满屏幕 */
+            height: 95vw; /* 增加表格高度 */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 0;
         }
-
         td {
             border: 1px solid #ddd;
+            padding: 1vh; /* 减少单元格填充 */
             text-align: center;
-            padding: 0;
-            vertical-align: middle; /* 确保文字在单元格内居中 */
+            font-size: 4.5vw; /* 字体更大 */
         }
-
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-
         tr:hover {
             background-color: #ddd;
         }
-
         .description {
-            width: 98vw; /* 与表格宽度对齐 */
-            height: 10vh; /* 占用10%的屏幕高度 */
+            width: 95vw; /* 减少留空，几乎充满屏幕 */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 0;
+            padding: 1vh; /* 减少填充 */
             text-align: center;
-            margin: 0;
-            overflow: hidden; /* 防止说明文字超出容器 */
+            font-size: 3.5vw; /* 更大的说明文字 */
+            margin-top: 1vh;
         }
     </style>
 </head>
 <body>
-    <table role="table" id="priceTable">
+    <table role="table">
         <thead>
             <tr>
                 <th scope="col">商品</th>
@@ -96,31 +91,8 @@
             </tr>
         </tbody>
     </table>
-    <div class="description" id="description">
+    <div class="description">
         我们使用的是可再生的PLA材料打印，来源于玉米和甘蔗。请小心使用活动关节，避免大力操作。
     </div>
-
-    <script>
-        function adjustFontSize() {
-            const table = document.getElementById('priceTable');
-            const rows = table.getElementsByTagName('tr');
-            const tableHeight = table.clientHeight;
-            const rowCount = rows.length;
-            const fontSize = (tableHeight / rowCount) * 0.5; // 根据行数和表格高度计算字体大小
-
-            for (let i = 0; i < rows.length; i++) {
-                rows[i].style.fontSize = `${fontSize}px`;
-            }
-
-            // 调整说明文字的字体大小
-            const description = document.getElementById('description');
-            const descriptionHeight = description.clientHeight;
-            const descriptionFontSize = descriptionHeight * 0.5; // 根据说明区域高度计算字体大小
-            description.style.fontSize = `${descriptionFontSize}px`;
-        }
-
-        window.onload = adjustFontSize;
-        window.onresize = adjustFontSize;
-    </script>
 </body>
 </html>
