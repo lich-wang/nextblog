@@ -8,12 +8,12 @@
         html, body {
             margin: 0;
             padding: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             overflow: hidden; /* 防止滚动条出现 */
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* 从顶部开始对齐 */
+            justify-content: flex-start; /* 确保内容从顶部开始 */
             align-items: center;
             transform: rotate(180deg); /* 整个页面上下颠倒 */
         }
@@ -24,6 +24,7 @@
             height: 88vh; /* 占用88%的屏幕高度 */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 0; /* 确保表格没有额外的空白 */
         }
 
         td {
@@ -49,7 +50,7 @@
             padding: 0;
             text-align: center;
             font-size: 4vh; /* 适应屏幕的字体大小 */
-            margin-top: 0;
+            margin: 0;
         }
     </style>
 </head>
