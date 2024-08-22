@@ -5,46 +5,51 @@
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
     <title>商品价格表</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+        html, body {
             margin: 0;
             padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden; /* 防止滚动条出现 */
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start; /* 从顶部开始对齐 */
             align-items: center;
-            width: 98vw;
-            height: 98vw;
             transform: rotate(180deg); /* 整个页面上下颠倒 */
         }
+
         table {
             border-collapse: collapse;
-            width: 98vw; /* 占用100%的屏幕宽度 */
-            height: 88vh; /* 占用90%的屏幕高度 */
+            width: 98vw; /* 占用98%的屏幕宽度 */
+            height: 88vh; /* 占用88%的屏幕高度 */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         td {
             border: 1px solid #ddd;
             text-align: center;
             padding: 0;
+            vertical-align: middle; /* 确保文字在单元格内居中 */
         }
+
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
         tr:hover {
             background-color: #ddd;
         }
+
         .description {
-            width: 98; /* 与表格宽度对齐 */
+            width: 98vw; /* 与表格宽度对齐 */
             height: 10vh; /* 占用10%的屏幕高度 */
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 0;
             text-align: center;
             font-size: 4vh; /* 适应屏幕的字体大小 */
-            margin-top: 1vh;
+            margin-top: 0;
         }
     </style>
 </head>
