@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fetch 302 Redirect</title>
 </head>
 <body>
@@ -24,11 +23,15 @@ document.getElementById('fetch-btn').addEventListener('click', function() {
             redirect: 'manual'  // 阻止自动重定向
         })
         .then(response => {
-            if (response.status === 302) {
-                const redirectedUrl = response.headers.get('Location');
-                document.getElementById('result').innerText = 'Redirected URL: ' + redirectedUrl;
+            // 获取响应状态码
+            const status = response.status;
+            // 获取Location头部
+            const locationHeader = response.headers.get('Location');
+
+            if (locationHeader) {
+                document.getElementById('result').innerText = 'Redirected URL: ' + locationHeader;
             } else {
-                document.getElementById('result').innerText = 'Response location: ' + response.location;
+                document.getElementById('result').innerText = 'Response Status: ' + status + '\nResponse URL: ' + response.url;
             }
         })
         .catch(error => {
