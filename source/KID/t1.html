@@ -28,7 +28,7 @@ document.getElementById('fetch-btn').addEventListener('click', function() {
                 const redirectedUrl = response.headers.get('Location');
                 document.getElementById('result').innerText = 'Redirected URL: ' + redirectedUrl;
             } else {
-                document.getElementById('result').innerText = 'Response Status: ' + response.status;
+                document.getElementById('result').innerText = 'Response location: ' + response.location;
             }
         })
         .catch(error => {
