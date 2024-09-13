@@ -1,17 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Simple POST Form</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch 302 Redirect</title>
 </head>
 <body>
 
-<h2>POST to a Specific URL</h2>
+<h1>Fetch 302 Redirect Example</h1>
 
-<form action="YOUR_URL_HERE" method="post">
-    <label for="dataField">Data:</label>
-    <input type="text" id="dataField" name="dataField"><br><br>
-    <input type="submit" value="Submit">
-</form>
+<label for="url-input">Enter URL:</label>
+<input type="text" id="url-input" placeholder="https://example.com" style="width: 300px;">
+<button id="fetch-btn">Fetch URL</button>
+
+<p id="result"></p>
+
+<script>
+document.getElementById('fetch-btn').addEventListener('click', function() {
+    const url = document.getElementById('url-input').value;  // 获取输入的URL
+    if (url) {
+        fetch(url, {
+            method: 'GET',
+            redirect: 'manual'  // 阻止自动重定向
+        })
+        .then(response => {
+            if (response.status === 302) {
+                const redirectedUrl = response.headers.get('Location');
+                document.getElementById('result').innerText = 'Redirected URL: ' + redirectedUrl;
+            } else {
+                document.getElementById('result').innerText = 'Response Status: ' + response.status;
+            }
+        })
+        .catch(error => {
+            document.getElementById('result').innerText = 'Error: ' + error;
+        });
+    } else {
+        document.getElementById('result').innerText = 'Please enter a valid URL.';
+    }
+});
+</script>
 
 </body>
 </html>
