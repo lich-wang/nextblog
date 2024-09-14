@@ -2,42 +2,45 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Fetch 302 Redirect</title>
+    <title>XMLHttpRequest Example</title>
 </head>
 <body>
 
-<h1>Fetch 302 Redirect Example</h1>
+<h1>XMLHttpRequest Example</h1>
 
 <label for="url-input">Enter URL:</label>
 <input type="text" id="url-input" placeholder="https://example.com" style="width: 300px;">
-<button id="fetch-btn">Fetch URL</button>
+<button id="fetch-btn">Send Request</button>
 
 <p id="result"></p>
 
 <script>
 document.getElementById('fetch-btn').addEventListener('click', function() {
-    const url = document.getElementById('url-input').value;  // 获取输入的URL
-    if (url) {
-        fetch(url, {
-            method: 'GET',
-            redirect: 'manual', // 阻止自动重定向
-            credentials: 'include'  // 包含凭证（如Cookies）
-        })
-        .then(response => {
-            // 获取响应状态码
-            const status = response.status;
-            // 获取Location头部，使用小写的'location'
-            const locationHeader = response.headers.get('location');
+    const url = document.getElementById('url-input').value;
 
-            if (status >= 300 && status < 400 && locationHeader) {
-                document.getElementById('result').innerText = 'Redirected URL: ' + locationHeader;
-            } else {
-                document.getElementById('result').innerText = 'Response Status: ' + status + '\nResponse URL: ' + response.url;
+    if (url) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.withCredentials = true;  // 包含凭证（如Cookies）
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                const status = xhr.status;
+                const locationHeader = xhr.getResponseHeader('location');
+
+                if (status >= 300 && status < 400 && locationHeader) {
+                    document.getElementById('result').innerText = 'Redirected URL: ' + locationHeader;
+                } else {
+                    document.getElementById('result').innerText = 'Response Status: ' + status + '\nResponse URL: ' + xhr.responseURL;
+                }
             }
-        })
-        .catch(error => {
+        };
+
+        xhr.onerror = function(error) {
             document.getElementById('result').innerText = 'Error: ' + error;
-        });
+        };
+
+        xhr.send();
     } else {
         document.getElementById('result').innerText = 'Please enter a valid URL.';
     }
