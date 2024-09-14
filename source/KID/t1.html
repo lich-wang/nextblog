@@ -1,34 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fetch 302 Redirect</title>
+</head>
+<body>
+
+<h1>Fetch 302 Redirect Example</h1>
+
+<label for="url-input">Enter URL:</label>
+<input type="text" id="url-input" placeholder="https://example.com" style="width: 300px;">
+<button id="fetch-btn">Fetch URL</button>
+
+<p id="result"></p>
+
 <script>
-    document.getElementById('fetch-btn').addEventListener('click', function() {
-        const url = document.getElementById('url-input').value;
-    
-        if (url) {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', url, true);
-            xhr.withCredentials = true;
-    
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    const status = xhr.status;
-                    const finalUrl = xhr.responseURL;
-    
-                    if (status >= 200 && status < 300) {
-                        document.getElementById('result').innerText = 'Final URL after redirects: ' + finalUrl;
-                    } else {
-                        document.getElementById('result').innerText = 'Response Status: ' + status + '\nFinal URL: ' + finalUrl;
-                    }
-                }
-            };
-    
-            xhr.onerror = function(event) {
-                console.error('Error:', event);
-                document.getElementById('result').innerText = 'Error Type: ' + event.type + '\nStatus: ' + xhr.status + '\nResponse URL: ' + xhr.responseURL;
-            };
-    
-            xhr.send();
-        } else {
-            document.getElementById('result').innerText = 'Please enter a valid URL.';
-        }
-    });
-    </script>
-    
+document.getElementById('fetch-btn').addEventListener('click', function() {
+    const url = document.getElementById('url-input').value;  // 获取输入的URL
+    if (url) {
+        fetch(url, {
+            method: 'GET',
+            //redirect: 'manual' , // 阻止自动重定向
+            credentials: 'include'  // 包含凭证（如Cookies）
+        })
+        .then(response => {
+            // 获取响应状态码
+            const status = response.status;
+            // 获取Location头部
+            const locationHeader = response.headers.get('Location');
+
+            if (locationHeader) {
+                document.getElementById('result').innerText = 'Redirected URL: ' + locationHeader;
+            } else {
+                document.getElementById('result').innerText = 'Response Status: ' + status + '\nResponse URL: ' + response.url;
+            }
+        })
+        .catch(error => {
+            document.getElementById('result').innerText = 'Error: ' + error;
+        });
+    } else {
+        document.getElementById('result').innerText = 'Please enter a valid URL.';
+    }
+});
+</script>
+
+</body>
+</html>
