@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock UI Authentication</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #fafafa;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Mock UI Authentication</h1>
+    <p>Click the button below to start the authentication with ROW-AM.</p>
+    
+    <button onclick="redirectToRowAM()">Login to ROW-AM</button>
+
+    <div id="result" class="result" style="display:none;"></div>
+</div>
+
+<script>
+    // 获取URL参数的函数
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    function redirectToRowAM() {
+        // 重定向到 ROW-AM 的授权页面
+        const redirectUri = encodeURIComponent(window.location.origin + '/mock_ui.html');
+        const loginURL = "https://https://fr14165-1.enterprise.dev-iam.jlrinfo.cn/auth/oauth2/realms/root/realms/enterprise/authorize?" +
+                         "scope=openid&client_id=china-EIP&response_type=code&prompt=none" +
+                         "&redirect_uri=" + redirectUri + 
+                         "&code_challenge=y6q3uTv-BPD5FF0ER0sNxZQnm7tl4cTcfd683hyidxk&code_challenge_method=S256";
+        
+        window.location.href = loginURL;  // 重定向到 ROW-AM 的授权页面
+    }
+
+    window.onload = function() {
+        // 页面加载时，检查是否有 auth_code 参数
+        const authCode = getQueryParam('code');
+        const error = getQueryParam('error');
+
+        const resultDiv = document.getElementById('result');
+        
+        if (authCode) {
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>Login successful! Received auth code: <strong>${authCode}</strong></p>`;
+        } else if (error) {
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>Login failed! Error: <strong>${error}</strong></p>`;
+        }
+    };
+</script>
+
+</body>
+</html>
