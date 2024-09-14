@@ -62,7 +62,7 @@
 
     async function authenticateWithCNAM(authCode) {
         try {
-            // 第一次调用 CN-AM：获取 authId 和回调
+            // 第一次调用 CN-AM：获取 authId 和回调信息
             const response1 = await fetch('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', {
                 method: 'POST',
                 headers: {
@@ -71,48 +71,26 @@
             });
 
             const data1 = await response1.json();
+            
+            // 在第一次请求返回的回调数据中找到需要替换 authcode 的部分
+            data1.callbacks.forEach(callback => {
+                if (callback.type === "StringAttributeInputCallback") {
+                    // 将 ROW-AM 的 auth code 填入 input
+                    callback.input.forEach(inputField => {
+                        if (inputField.name === "IDToken2") {
+                            inputField.value = authCode;  // 使用 ROW-AM 的 auth code 替换
+                        }
+                    });
+                }
+            });
 
-            // 提取 authId 和 callback 信息
-            const authId = data1.authId;
-            const callback = data1.callbacks[1];
-
-            // 将 ROW-AM 的 auth code 填入 input
-            const inputData = {
-                authId: authId,
-                callbacks: [
-                    {
-                        type: "TextOutputCallback",
-                        output: [
-                            {
-                                name: "message",
-                                value: "fr_china_collect_code"
-                            },
-                            {
-                                name: "messageType",
-                                value: "0"
-                            }
-                        ]
-                    },
-                    {
-                        type: "StringAttributeInputCallback",
-                        output: callback.output,
-                        input: [
-                            {
-                                name: "IDToken2",
-                                value: authCode // 使用 ROW-AM 的 auth code
-                            }
-                        ]
-                    }
-                ]
-            };
-
-            // 第二次调用 CN-AM：提交包含 ROW-AM auth code 的数据
+            // 第二次调用 CN-AM：提交包含 ROW-AM auth code 的完整数据
             const response2 = await fetch('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(inputData)
+                body: JSON.stringify(data1)  // 使用第一次返回的完整结构
             });
 
             const data2 = await response2.json();
