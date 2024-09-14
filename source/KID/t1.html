@@ -20,7 +20,7 @@ document.getElementById('fetch-btn').addEventListener('click', function() {
     if (url) {
         fetch(url, {
             method: 'GET',
-            redirect: 'manual', // 阻止自动重定向
+            //redirect: 'manual', // 阻止自动重定向
             credentials: 'include'  // 包含凭证（如Cookies）
         })
         .then(response => {
