@@ -1,52 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>XMLHttpRequest ResponseURL Example</title>
-</head>
-<body>
-
-<h1>XMLHttpRequest ResponseURL Example</h1>
-
-<label for="url-input">Enter URL:</label>
-<input type="text" id="url-input" placeholder="https://example.com" style="width: 300px;">
-<button id="fetch-btn">Send Request</button>
-
-<p id="result"></p>
-
 <script>
-document.getElementById('fetch-btn').addEventListener('click', function() {
-    const url = document.getElementById('url-input').value;
-
-    if (url) {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.withCredentials = true;  // 包含凭证（如Cookies）
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                const status = xhr.status;
-                const finalUrl = xhr.responseURL;
-
-                if (status >= 200 && status < 300) {
-                    document.getElementById('result').innerText = 'Final URL after redirects: ' + finalUrl;
-                } else {
-                    document.getElementById('result').innerText = 'Response Status: ' + status + '\nFinal URL: ' + finalUrl;
+    document.getElementById('fetch-btn').addEventListener('click', function() {
+        const url = document.getElementById('url-input').value;
+    
+        if (url) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.withCredentials = true;
+    
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    const status = xhr.status;
+                    const finalUrl = xhr.responseURL;
+    
+                    if (status >= 200 && status < 300) {
+                        document.getElementById('result').innerText = 'Final URL after redirects: ' + finalUrl;
+                    } else {
+                        document.getElementById('result').innerText = 'Response Status: ' + status + '\nFinal URL: ' + finalUrl;
+                    }
                 }
-            }
-        };
-
-        xhr.onerror = function(error) {
-            console.error('Error:', error);
-            document.getElementById('result').innerText = 'Error: ' + error;
-        };
-
-        xhr.send();
-    } else {
-        document.getElementById('result').innerText = 'Please enter a valid URL.';
-    }
-});
-</script>
-
-</body>
-</html>
+            };
+    
+            xhr.onerror = function(event) {
+                console.error('Error:', event);
+                document.getElementById('result').innerText = 'Error Type: ' + event.type + '\nStatus: ' + xhr.status + '\nResponse URL: ' + xhr.responseURL;
+            };
+    
+            xhr.send();
+        } else {
+            document.getElementById('result').innerText = 'Please enter a valid URL.';
+        }
+    });
+    </script>
+    
