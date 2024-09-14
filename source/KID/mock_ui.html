@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mock UI Authentication</title>
+    <title>Complete Authentication Flow</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -34,8 +34,8 @@
 <body>
 
 <div class="container">
-    <h1>Mock UI Authentication</h1>
-    <p>Click the button below to start the authentication with ROW-AM.</p>
+    <h1>Complete Authentication Flow</h1>
+    <p>Click the button below to start the authentication with ROW-AM and CN-AM.</p>
     
     <button onclick="redirectToRowAM()">Login to ROW-AM</button>
 
@@ -60,6 +60,76 @@
         window.location.href = loginURL;  // 重定向到 ROW-AM 的授权页面
     }
 
+    async function authenticateWithCNAM(authCode) {
+        try {
+            // 第一次调用 CN-AM：获取 authId 和回调
+            const response1 = await fetch('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data1 = await response1.json();
+
+            // 提取 authId 和 callback 信息
+            const authId = data1.authId;
+            const callback = data1.callbacks[1];
+
+            // 将 ROW-AM 的 auth code 填入 input
+            const inputData = {
+                authId: authId,
+                callbacks: [
+                    {
+                        type: "TextOutputCallback",
+                        output: [
+                            {
+                                name: "message",
+                                value: "fr_china_collect_code"
+                            },
+                            {
+                                name: "messageType",
+                                value: "0"
+                            }
+                        ]
+                    },
+                    {
+                        type: "StringAttributeInputCallback",
+                        output: callback.output,
+                        input: [
+                            {
+                                name: "IDToken2",
+                                value: authCode // 使用 ROW-AM 的 auth code
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            // 第二次调用 CN-AM：提交包含 ROW-AM auth code 的数据
+            const response2 = await fetch('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(inputData)
+            });
+
+            const data2 = await response2.json();
+
+            // 在页面上显示 CN-AM 的响应结果
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>CN-AM response: <strong>${JSON.stringify(data2)}</strong></p>`;
+            
+        } catch (error) {
+            console.error('Error:', error);
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>Error: <strong>${error.message}</strong></p>`;
+        }
+    }
+
     window.onload = function() {
         // 页面加载时，检查是否有 auth_code 参数
         const authCode = getQueryParam('code');
@@ -69,7 +139,10 @@
         
         if (authCode) {
             resultDiv.style.display = "block";
-            resultDiv.innerHTML = `<p>Login successful! Received auth code: <strong>${authCode}</strong></p>`;
+            resultDiv.innerHTML = `<p>Login successful! Received ROW-AM auth code: <strong>${authCode}</strong></p>`;
+            
+            // 调用 CN-AM 进行身份验证
+            authenticateWithCNAM(authCode);
         } else if (error) {
             resultDiv.style.display = "block";
             resultDiv.innerHTML = `<p>Login failed! Error: <strong>${error}</strong></p>`;
