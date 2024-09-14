@@ -51,7 +51,7 @@
 
     function redirectToRowAM() {
         // 重定向到 ROW-AM 的授权页面
-        const redirectUri = encodeURIComponent(window.location.origin + '/mock_ui.html');
+        const redirectUri = encodeURIComponent(window.location.origin + '/KID/mock_ui.html');
         const loginURL = "https://fr14165-1.enterprise.dev-iam.jlrinfo.cn/auth/oauth2/realms/root/realms/enterprise/authorize?" +
                          "scope=openid&client_id=china-EIP&response_type=code&prompt=none" +
                          "&redirect_uri=" + redirectUri + 
