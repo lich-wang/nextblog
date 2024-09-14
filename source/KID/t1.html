@@ -2,45 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>XMLHttpRequest Example</title>
+    <title>Fetch 302 Redirect</title>
 </head>
 <body>
 
-<h1>XMLHttpRequest Example</h1>
+<h1>Fetch 302 Redirect Example</h1>
 
 <label for="url-input">Enter URL:</label>
 <input type="text" id="url-input" placeholder="https://example.com" style="width: 300px;">
-<button id="fetch-btn">Send Request</button>
+<button id="fetch-btn">Fetch URL</button>
 
 <p id="result"></p>
 
 <script>
 document.getElementById('fetch-btn').addEventListener('click', function() {
     const url = document.getElementById('url-input').value;
-
     if (url) {
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.withCredentials = true;  // 包含凭证（如Cookies）
+        fetch(url, {
+            method: 'GET',
+            redirect: 'manual',
+            credentials: 'include'
+        })
+        .then(response => {
+            const status = response.status;
+            const locationHeader = response.headers.get('location');
 
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                const status = xhr.status;
-                const locationHeader = xhr.getResponseHeader('location');
-
-                if (status >= 300 && status < 400 && locationHeader) {
-                    document.getElementById('result').innerText = 'Redirected URL: ' + locationHeader;
-                } else {
-                    document.getElementById('result').innerText = 'Response Status: ' + status + '\nResponse URL: ' + xhr.responseURL;
-                }
+            if (status >= 300 && status < 400 && locationHeader) {
+                document.getElementById('result').innerText = 'Redirected URL: ' + locationHeader;
+            } else {
+                document.getElementById('result').innerText = 'Response Status: ' + status;
             }
-        };
-
-        xhr.onerror = function(error) {
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
             document.getElementById('result').innerText = 'Error: ' + error;
-        };
-
-        xhr.send();
+        });
     } else {
         document.getElementById('result').innerText = 'Please enter a valid URL.';
     }
