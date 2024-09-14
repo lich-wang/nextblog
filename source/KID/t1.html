@@ -20,16 +20,16 @@ document.getElementById('fetch-btn').addEventListener('click', function() {
     if (url) {
         fetch(url, {
             method: 'GET',
-            redirect: 'manual' , // 阻止自动重定向
+            redirect: 'manual', // 阻止自动重定向
             credentials: 'include'  // 包含凭证（如Cookies）
         })
         .then(response => {
             // 获取响应状态码
             const status = response.status;
-            // 获取Location头部
-            const locationHeader = response.headers.get('Location');
+            // 获取Location头部，使用小写的'location'
+            const locationHeader = response.headers.get('location');
 
-            if (locationHeader) {
+            if (status >= 300 && status < 400 && locationHeader) {
                 document.getElementById('result').innerText = 'Redirected URL: ' + locationHeader;
             } else {
                 document.getElementById('result').innerText = 'Response Status: ' + status + '\nResponse URL: ' + response.url;
