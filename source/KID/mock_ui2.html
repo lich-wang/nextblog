@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Authentication Flow</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #fafafa;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Complete Authentication Flow</h1>
+    <p>Click the button below to start the authentication with ROW-AM and CN-AM.</p>
+    
+    <button (click)="redirectToRowAM()">Login to ROW-AM</button>
+
+    <div id="result" class="result" style="display:none;"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@angular/core@12/bundles/core.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@angular/common@12/bundles/common.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@angular/platform-browser@12/bundles/platform-browser.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@angular/http@12/bundles/http.umd.min.js"></script>
+
+<script>
+// 组件逻辑可以放在此处，或与 Angular 项目中的 TypeScript 文件对应
+
+class AuthFlowComponent {
+  constructor(http) {
+    this.http = http;
+  }
+
+  ngOnInit() {
+    const authCode = this.getQueryParam('code');
+    const error = this.getQueryParam('error');
+
+    if (authCode) {
+      this.authenticateWithCNAM(authCode);
+    } else if (error) {
+      console.error(`Login failed! Error: ${error}`);
+    }
+  }
+
+  getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  redirectToRowAM() {
+    const redirectUri = encodeURIComponent(window.location.origin + '/KID/mock_ui.html');
+    const loginURL = `https://fr-13566.dev-iam.jlr-apps.com/auth/oauth2/realms/root/realms/enterprise/authorize?` +
+      `scope=openid&client_id=china-EIP&response_type=code&prompt=none` +
+      `&redirect_uri=${redirectUri}&code_challenge=y6q3uTv-BPD5FF0ER0sNxZQnm7tl4cTcfd683hyidxk&code_challenge_method=S256`;
+
+    window.location.href = loginURL;
+  }
+
+  authenticateWithCNAM(authCode) {
+    // 第一次调用 CN-AM：获取 authId 和回调信息
+    this.http.post('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', {})
+      .subscribe(data1 => {
+
+        // 在第一次请求返回的回调数据中找到需要替换 authcode 的部分
+        data1.callbacks.forEach(callback => {
+          if (callback.type === "StringAttributeInputCallback") {
+            callback.input.forEach(inputField => {
+              if (inputField.name === "IDToken2") {
+                inputField.value = authCode;  // 使用 ROW-AM 的 auth code 替换
+              }
+            });
+          }
+        });
+
+        // 第二次调用 CN-AM：提交包含 ROW-AM auth code 的完整数据
+        this.http.post('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', data1)
+          .subscribe(data2 => {
+            console.log('CN-AM response:', data2);
+          }, error => {
+            console.error('Error in second CN-AM request:', error);
+          });
+
+      }, error => {
+        console.error('Error in first CN-AM request:', error);
+      });
+  }
+}
+
+</script>
+</body>
+</html>
