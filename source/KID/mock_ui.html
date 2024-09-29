@@ -38,6 +38,8 @@
     <p>Click the button below to start the authentication with ROW-AM and CN-AM.</p>
     
     <button onclick="startAuthFlow()">Start Authentication Flow</button>
+    <button id="continueButton1" style="display:none;" onclick="continueAuthToRowAM()">Continue to ROW-AM Authentication</button>
+    <button id="continueButton2" style="display:none;" onclick="continueAuthToCNAM()">Continue to CN-AM Authentication</button>
 
     <div id="result" class="result" style="display:none;"></div>
 </div>
@@ -48,6 +50,8 @@
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(param);
     }
+
+    let authCode = null;
 
     async function startAuthFlow() {
         try {
@@ -62,11 +66,11 @@
             const cnAmData = await cnAmResponse.json();
             const codeChallenge = cnAmData.callbacks[0].output.find(output => output.name === 'message').value.split(':')[1];
 
-            // 第二步：重定向到 ROW-AM 的授权页面
-            const redirectUri = encodeURIComponent(window.location.origin + '/KID/mock_ui.html');
-            const loginURL = `https://fr-13566.dev-iam.jlr-apps.com/auth/oauth2/realms/root/realms/enterprise/authorize?scope=openid&client_id=china-EIP&response_type=code&prompt=none&redirect_uri=${redirectUri}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
-            
-            window.location.href = loginURL;  // 重定向到 ROW-AM 的授权页面
+            // 第二步：显示继续按钮，暂停流程，等待用户点击“继续”按钮
+            document.getElementById('continueButton1').style.display = 'block';
+
+            // 暂存 codeChallenge，供继续时使用
+            window.codeChallenge = codeChallenge;
 
         } catch (error) {
             console.error('Error during CN-AM request:', error);
@@ -74,6 +78,24 @@
             resultDiv.style.display = "block";
             resultDiv.innerHTML = `<p>Error: <strong>${error.message}</strong></p>`;
         }
+    }
+
+    function continueAuthToRowAM() {
+        // 隐藏继续按钮1
+        document.getElementById('continueButton1').style.display = 'none';
+
+        // 重定向到 ROW-AM 的授权页面
+        const codeChallenge = window.codeChallenge;
+        const redirectUri = encodeURIComponent(window.location.origin + '/KID/mock_ui.html');
+        const loginURL = `https://fr-13566.dev-iam.jlr-apps.com/auth/oauth2/realms/root/realms/enterprise/authorize?scope=openid&client_id=china-EIP&response_type=code&prompt=none&redirect_uri=${redirectUri}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+        
+        window.location.href = loginURL;  // 重定向到 ROW-AM 的授权页面
+    }
+
+    function continueAuthToCNAM() {
+        // 隐藏继续按钮2
+        document.getElementById('continueButton2').style.display = 'none';
+        authenticateWithCNAM(authCode);
     }
 
     async function authenticateWithCNAM(authCode) {
@@ -125,7 +147,7 @@
 
     window.onload = function() {
         // 检查是否有 auth_code 参数
-        const authCode = getQueryParam('code');
+        authCode = getQueryParam('code');
         const error = getQueryParam('error');
 
         const resultDiv = document.getElementById('result');
@@ -134,8 +156,8 @@
             resultDiv.style.display = "block";
             resultDiv.innerHTML = `<p>Login successful! Received ROW-AM auth code: <strong>${authCode}</strong></p>`;
             
-            // 使用 ROW-AM 的 auth_code 调用 CN-AM
-            authenticateWithCNAM(authCode);
+            // 显示第二个继续按钮，等待用户确认
+            document.getElementById('continueButton2').style.display = 'block';
         } else if (error) {
             resultDiv.style.display = "block";
             resultDiv.innerHTML = `<p>Login failed! Error: <strong>${error}</strong></p>`;
