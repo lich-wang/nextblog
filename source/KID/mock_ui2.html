@@ -37,78 +37,111 @@
     <h1>Complete Authentication Flow</h1>
     <p>Click the button below to start the authentication with ROW-AM and CN-AM.</p>
     
-    <button (click)="redirectToRowAM()">Login to ROW-AM</button>
+    <button onclick="startAuthFlow()">Start Authentication Flow</button>
 
     <div id="result" class="result" style="display:none;"></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
-
-
-
 <script>
-// 组件逻辑可以放在此处，或与 Angular 项目中的 TypeScript 文件对应
-
-class AuthFlowComponent {
-  constructor(http) {
-    this.http = http;
-  }
-
-  ngOnInit() {
-    const authCode = this.getQueryParam('code');
-    const error = this.getQueryParam('error');
-
-    if (authCode) {
-      this.authenticateWithCNAM(authCode);
-    } else if (error) {
-      console.error(`Login failed! Error: ${error}`);
+    // 获取URL参数的函数
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
     }
-  }
 
-  getQueryParam(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-  }
-
-  redirectToRowAM() {
-    const redirectUri = encodeURIComponent(window.location.origin + '/KID/mock_ui.html');
-    const loginURL = `https://fr-13566.dev-iam.jlr-apps.com/auth/oauth2/realms/root/realms/enterprise/authorize?` +
-      `scope=openid&client_id=china-EIP&response_type=code&prompt=none` +
-      `&redirect_uri=${redirectUri}&code_challenge=y6q3uTv-BPD5FF0ER0sNxZQnm7tl4cTcfd683hyidxk&code_challenge_method=S256`;
-
-    window.location.href = loginURL;
-  }
-
-  authenticateWithCNAM(authCode) {
-    // 第一次调用 CN-AM：获取 authId 和回调信息
-    this.http.post('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', {})
-      .subscribe(data1 => {
-
-        // 在第一次请求返回的回调数据中找到需要替换 authcode 的部分
-        data1.callbacks.forEach(callback => {
-          if (callback.type === "StringAttributeInputCallback") {
-            callback.input.forEach(inputField => {
-              if (inputField.name === "IDToken2") {
-                inputField.value = authCode;  // 使用 ROW-AM 的 auth code 替换
-              }
+    async function startAuthFlow() {
+        try {
+            // 第一步：获取 CN-AM 的 code_challenge
+            const cnAmResponse = await fetch('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
-          }
-        });
 
-        // 第二次调用 CN-AM：提交包含 ROW-AM auth code 的完整数据
-        this.http.post('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', data1)
-          .subscribe(data2 => {
-            console.log('CN-AM response:', data2);
-          }, error => {
-            console.error('Error in second CN-AM request:', error);
-          });
+            const cnAmData = await cnAmResponse.json();
+            const codeChallenge = cnAmData.callbacks[0].output.find(output => output.name === 'message').value.split(':')[1];
 
-      }, error => {
-        console.error('Error in first CN-AM request:', error);
-      });
-  }
-}
+            // 第二步：重定向到 ROW-AM 的授权页面
+            const redirectUri = encodeURIComponent(window.location.origin + '/KID/mock_ui.html');
+            const loginURL = `https://fr-13566.dev-iam.jlr-apps.com/auth/oauth2/realms/root/realms/enterprise/authorize?scope=openid&client_id=china-EIP&response_type=code&prompt=none&redirect_uri=${redirectUri}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+            
+            window.location.href = loginURL;  // 重定向到 ROW-AM 的授权页面
 
+        } catch (error) {
+            console.error('Error during CN-AM request:', error);
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>Error: <strong>${error.message}</strong></p>`;
+        }
+    }
+
+    async function authenticateWithCNAM(authCode) {
+        try {
+            // 第三步：调用 CN-AM 的第二个接口，使用 ROW-AM 返回的 auth_code
+            const response1 = await fetch('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data1 = await response1.json();
+
+            // 在返回的数据中填入 ROW-AM 的 auth code
+            data1.callbacks.forEach(callback => {
+                if (callback.type === "StringAttributeInputCallback") {
+                    callback.input.forEach(inputField => {
+                        if (inputField.name === "IDToken2") {
+                            inputField.value = authCode;  // 使用 ROW-AM 的 auth code
+                        }
+                    });
+                }
+            });
+
+            // 第二次调用 CN-AM
+            const response2 = await fetch('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data1)  // 传递包含 ROW-AM auth_code 的完整数据
+            });
+
+            const data2 = await response2.json();
+
+            // 显示 CN-AM 的响应
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>CN-AM response: <strong>${JSON.stringify(data2)}</strong></p>`;
+            
+        } catch (error) {
+            console.error('Error:', error);
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>Error: <strong>${error.message}</strong></p>`;
+        }
+    }
+
+    window.onload = function() {
+        // 检查是否有 auth_code 参数
+        const authCode = getQueryParam('code');
+        const error = getQueryParam('error');
+
+        const resultDiv = document.getElementById('result');
+        
+        if (authCode) {
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>Login successful! Received ROW-AM auth code: <strong>${authCode}</strong></p>`;
+            
+            // 使用 ROW-AM 的 auth_code 调用 CN-AM
+            authenticateWithCNAM(authCode);
+        } else if (error) {
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>Login failed! Error: <strong>${error}</strong></p>`;
+        }
+    };
 </script>
+
 </body>
 </html>
