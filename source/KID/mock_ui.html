@@ -52,6 +52,7 @@
     }
 
     let authCode = null;
+    let cnamProcessed = false;  // 标志变量，确保 CN-AM 请求只执行一次
 
     async function startAuthFlow() {
         try {
@@ -95,7 +96,14 @@
     function continueAuthToCNAM() {
         // 隐藏继续按钮2
         document.getElementById('continueButton2').style.display = 'none';
-        authenticateWithCNAM(authCode);
+        if (!cnamProcessed) {  // 仅在未处理时调用 CN-AM
+            authenticateWithCNAM(authCode);
+            cnamProcessed = true;  // 设置标志为已处理
+        } else {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>CN-AM authentication has already been processed.</p>`;
+        }
     }
 
     async function authenticateWithCNAM(authCode) {
