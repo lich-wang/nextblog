@@ -52,7 +52,6 @@
     }
 
     let authCode = null;
-    let cnamProcessed = false;  // 标志变量，确保 CN-AM 请求只执行一次
 
     async function startAuthFlow() {
         try {
@@ -67,11 +66,12 @@
             const cnAmData = await cnAmResponse.json();
             const codeChallenge = cnAmData.callbacks[0].output.find(output => output.name === 'message').value.split(':')[1];
 
-            // 第二步：显示继续按钮，暂停流程，等待用户点击“继续”按钮
-            document.getElementById('continueButton1').style.display = 'block';
+            // 将 codeChallenge 和完整的 CN-AM 响应数据保存到 sessionStorage 中
+            sessionStorage.setItem('codeChallenge', codeChallenge);
+            sessionStorage.setItem('cnAmData', JSON.stringify(cnAmData));
 
-            // 暂存 codeChallenge，供继续时使用
-            window.codeChallenge = codeChallenge;
+            // 显示继续按钮，暂停流程，等待用户点击“继续”按钮
+            document.getElementById('continueButton1').style.display = 'block';
 
         } catch (error) {
             console.error('Error during CN-AM request:', error);
@@ -85,8 +85,16 @@
         // 隐藏继续按钮1
         document.getElementById('continueButton1').style.display = 'none';
 
+        // 从 sessionStorage 获取 codeChallenge
+        const codeChallenge = sessionStorage.getItem('codeChallenge');
+        if (!codeChallenge) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>Error: <strong>codeChallenge not found. Please restart the flow.</strong></p>`;
+            return;
+        }
+
         // 重定向到 ROW-AM 的授权页面
-        const codeChallenge = window.codeChallenge;
         const redirectUri = encodeURIComponent(window.location.origin + '/KID/mock_ui.html');
         const loginURL = `https://fr-13566.dev-iam.jlr-apps.com/auth/oauth2/realms/root/realms/enterprise/authorize?scope=openid&client_id=china-EIP&response_type=code&prompt=none&redirect_uri=${redirectUri}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
         
@@ -96,9 +104,10 @@
     function continueAuthToCNAM() {
         // 隐藏继续按钮2
         document.getElementById('continueButton2').style.display = 'none';
-        if (!cnamProcessed) {  // 仅在未处理时调用 CN-AM
+
+        // 检查是否已经处理过 CN-AM 请求
+        if (sessionStorage.getItem('cnamProcessed') !== 'true') {  
             authenticateWithCNAM(authCode);
-            cnamProcessed = true;  // 设置标志为已处理
         } else {
             const resultDiv = document.getElementById('result');
             resultDiv.style.display = "block";
@@ -108,18 +117,17 @@
 
     async function authenticateWithCNAM(authCode) {
         try {
-            // 第三步：调用 CN-AM 的第二个接口，使用 ROW-AM 返回的 auth_code
-            const response1 = await fetch('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            // 第三步：使用第一步的 CN-AM 响应发起第二次 CN-AM 请求
+            const cnAmData = JSON.parse(sessionStorage.getItem('cnAmData'));
+            if (!cnAmData) {
+                const resultDiv = document.getElementById('result');
+                resultDiv.style.display = "block";
+                resultDiv.innerHTML = `<p>Error: <strong>CN-AM data not found. Please restart the flow.</strong></p>`;
+                return;
+            }
 
-            const data1 = await response1.json();
-
-            // 在返回的数据中填入 ROW-AM 的 auth code
-            data1.callbacks.forEach(callback => {
+            // 在第一步返回的数据中填入 ROW-AM 的 auth code
+            cnAmData.callbacks.forEach(callback => {
                 if (callback.type === "StringAttributeInputCallback") {
                     callback.input.forEach(inputField => {
                         if (inputField.name === "IDToken2") {
@@ -135,10 +143,13 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data1)  // 传递包含 ROW-AM auth_code 的完整数据
+                body: JSON.stringify(cnAmData)  // 传递包含 ROW-AM auth_code 的完整数据
             });
 
             const data2 = await response2.json();
+
+            // 标记 CN-AM 请求已处理
+            sessionStorage.setItem('cnamProcessed', 'true');  
 
             // 显示 CN-AM 的响应
             const resultDiv = document.getElementById('result');
