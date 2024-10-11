@@ -117,7 +117,7 @@
 
     async function authenticateWithCNAM(authCode) {
         try {
-            // 第三步：使用第一步的 CN-AM 响应发起第二次 CN-AM 请求
+            // 第二步：CN-AM 请求不需要传递 authCode，只是发起普通请求
             const cnAmData = JSON.parse(sessionStorage.getItem('cnAmData'));
             if (!cnAmData) {
                 const resultDiv = document.getElementById('result');
@@ -126,7 +126,43 @@
                 return;
             }
 
-            // 在第一步返回的数据中填入 ROW-AM 的 auth code
+            // 发起第二次 CN-AM 请求
+            const response2 = await fetch('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(cnAmData)  // 没有包含 ROW-AM auth_code
+            });
+
+            const data2 = await response2.json();
+            sessionStorage.setItem('cnAmData', JSON.stringify(data2));  // 保存第二次的响应数据
+
+            // 第三次请求需要使用 authCode
+            if (authCode) {
+                finalizeAuthWithCNAM(authCode);
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>Error: <strong>${error.message}</strong></p>`;
+        }
+    }
+
+    async function finalizeAuthWithCNAM(authCode) {
+        try {
+            // 第三步：使用第二次 CN-AM 的响应数据发起请求，填入 authCode
+            const cnAmData = JSON.parse(sessionStorage.getItem('cnAmData'));
+            if (!cnAmData) {
+                const resultDiv = document.getElementById('result');
+                resultDiv.style.display = "block";
+                resultDiv.innerHTML = `<p>Error: <strong>CN-AM data not found. Please restart the flow.</strong></p>`;
+                return;
+            }
+
+            // 在第二次返回的数据中填入 ROW-AM 的 auth code
             cnAmData.callbacks.forEach(callback => {
                 if (callback.type === "StringAttributeInputCallback") {
                     callback.input.forEach(inputField => {
@@ -137,16 +173,16 @@
                 }
             });
 
-            // 第二次调用 CN-AM
-            const response2 = await fetch('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', {
+            // 发起第三次 CN-AM 请求
+            const response3 = await fetch('https://fr-13566.enterprise.dev-iam.jlrinfo.cn/auth/json/realms/root/realms/enterprise/authenticate?tree=login&authIndexType=service&authIndexValue=login&service=login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(cnAmData)  // 传递包含 ROW-AM auth_code 的完整数据
+                body: JSON.stringify(cnAmData)  // 传递包含 ROW-AM auth_code 的数据
             });
 
-            const data2 = await response2.json();
+            const data3 = await response3.json();
 
             // 标记 CN-AM 请求已处理
             sessionStorage.setItem('cnamProcessed', 'true');  
@@ -154,7 +190,7 @@
             // 显示 CN-AM 的响应
             const resultDiv = document.getElementById('result');
             resultDiv.style.display = "block";
-            resultDiv.innerHTML = `<p>CN-AM response: <strong>${JSON.stringify(data2)}</strong></p>`;
+            resultDiv.innerHTML = `<p>CN-AM response: <strong>${JSON.stringify(data3)}</strong></p>`;
             
         } catch (error) {
             console.error('Error:', error);
@@ -167,22 +203,4 @@
     window.onload = function() {
         // 检查是否有 auth_code 参数
         authCode = getQueryParam('code');
-        const error = getQueryParam('error');
-
-        const resultDiv = document.getElementById('result');
-        
-        if (authCode) {
-            resultDiv.style.display = "block";
-            resultDiv.innerHTML = `<p>Login successful! Received ROW-AM auth code: <strong>${authCode}</strong></p>`;
-            
-            // 显示第二个继续按钮，等待用户确认
-            document.getElementById('continueButton2').style.display = 'block';
-        } else if (error) {
-            resultDiv.style.display = "block";
-            resultDiv.innerHTML = `<p>Login failed! Error: <strong>${error}</strong></p>`;
-        }
-    };
-</script>
-
-</body>
-</html>
+        const error = getQueryParam
