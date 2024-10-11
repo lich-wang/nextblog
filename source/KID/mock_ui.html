@@ -64,7 +64,7 @@
             });
 
             const cnAmData = await cnAmResponse.json();
-            const codeChallenge = cnAmData.callbacks[0].output.find(output => output.name === 'message').value.split(':')[1];
+            const codeChallenge = cnAmData.callbacks[0].output.find(output => output.name === 'message').value;
 
             // 将 codeChallenge 和完整的 CN-AM 响应数据保存到 sessionStorage 中
             sessionStorage.setItem('codeChallenge', codeChallenge);
