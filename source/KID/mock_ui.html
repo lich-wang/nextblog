@@ -203,4 +203,22 @@
     window.onload = function() {
         // 检查是否有 auth_code 参数
         authCode = getQueryParam('code');
-        const error = getQueryParam
+        const error = getQueryParam('error');
+
+        const resultDiv = document.getElementById('result');
+        
+        if (authCode) {
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>Login successful! Received ROW-AM auth code: <strong>${authCode}</strong></p>`;
+            
+            // 显示第二个继续按钮，等待用户确认
+            document.getElementById('continueButton2').style.display = 'block';
+        } else if (error) {
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `<p>Login failed! Error: <strong>${error}</strong></p>`;
+        }
+    };
+</script>
+
+</body>
+</html>
