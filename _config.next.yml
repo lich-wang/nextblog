@@ -955,7 +955,7 @@ plantuml:
   className: "plantuml"
 
 giscus:
-  enable: true
+  enable: false
   # Github repository name
   repo: lich-wang/nextblog-comment
   # Github repository id
