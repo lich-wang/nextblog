@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOTP Display</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.2.0/sha.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .totp {
+            font-size: 2em;
+            color: #032b75;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TOTP Viewer</h1>
+        <div id="accountName"></div>
+        <div class="totp" id="totpCode">Loading...</div>
+    </div>
+
+    <script>
+        // Helper function to parse query parameters from URL
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                totp: params.get('totp'),
+            };
+        }
+
+        // Extract parameters and decode TOTP key
+        function parseTotpUrl(url) {
+            const regex = /otpauth:\/\/totp\/([^:]+):([^?]+)\?secret=([^&]+)&period=(\d+)&digits=(\d+)/;
+            const match = url.match(regex);
+
+            if (!match) {
+                return null;
+            }
+
+            return {
+                issuer: decodeURIComponent(match[1]),
+                account: decodeURIComponent(match[2]),
+                secret: match[3],
+                period: parseInt(match[4], 10),
+                digits: parseInt(match[5], 10),
+            };
+        }
+
+        // TOTP generation
+        function generateTotp(secret, time, period, digits) {
+            const epoch = Math.floor(time / 1000);
+            const counter = Math.floor(epoch / period);
+
+            const key = Uint8Array.from(atob(secret.replace(/=/g, "")), c => c.charCodeAt(0));
+            const counterBytes = new ArrayBuffer(8);
+            const counterView = new DataView(counterBytes);
+            counterView.setUint32(4, counter);
+
+            const shaObj = new jsSHA("SHA-1", "UINT8ARRAY");
+            shaObj.setHMACKey(key, "UINT8ARRAY");
+            shaObj.update(new Uint8Array(counterBytes));
+            const hmac = shaObj.getHMAC("UINT8ARRAY");
+
+            const offset = hmac[hmac.length - 1] & 0xf;
+            const code = ((hmac[offset] & 0x7f) << 24) |
+                         ((hmac[offset + 1] & 0xff) << 16) |
+                         ((hmac[offset + 2] & 0xff) << 8) |
+                         (hmac[offset + 3] & 0xff);
+            
+            return String(code % (10 ** digits)).padStart(digits, '0');
+        }
+
+        function updateTotp() {
+            const params = getQueryParams();
+            if (!params.totp) {
+                document.getElementById('totpCode').innerText = 'Invalid TOTP URL';
+                return;
+            }
+
+            const totpData = parseTotpUrl(decodeURIComponent(params.totp));
+            if (!totpData) {
+                document.getElementById('totpCode').innerText = 'Invalid TOTP URL';
+                return;
+            }
+
+            document.getElementById('accountName').innerHTML = `<strong>${totpData.issuer}</strong>: ${totpData.account}`;
+
+            function refresh() {
+                const currentCode = generateTotp(totpData.secret, Date.now(), totpData.period, totpData.digits);
+                document.getElementById('totpCode').innerText = currentCode;
+            }
+
+            refresh();
+            setInterval(refresh, totpData.period * 1000);
+        }
+
+        // Initialize the TOTP display
+        updateTotp();
+    </script>
+</body>
+</html>
