@@ -147,7 +147,8 @@
 
         // 启动倒计时
         function startTimer(period) {
-            let remaining = period;
+            const epoch = Math.floor(Date.now() / 1000);
+            let remaining = period - (epoch % period); // 计算当前周期的剩余秒数
             document.getElementById('timer').innerText = remaining;
             const timerInterval = setInterval(() => {
                 remaining -= 1;
