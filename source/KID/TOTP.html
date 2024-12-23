@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TOTP 查看器</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.2.0/sha.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,6 +29,9 @@
             font-size: 1.5em;
             color: #888;
         }
+        .upload {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -36,6 +40,7 @@
         <div id="accountName"></div>
         <div class="totp" id="totpCode">加载中...</div>
         <div class="timer" id="timer">30</div>
+        <input type="file" id="upload" class="upload" accept="image/*">
         <p id="log" style="margin-top: 20px; color: #666; font-size: 0.9em;"></p>
     </div>
 
@@ -164,6 +169,37 @@
             document.getElementById('log').innerText = message;
             console.error(message);
         }
+
+        // 处理图片上传并解析二维码
+        document.getElementById('upload').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function () {
+                const img = new Image();
+                img.src = reader.result;
+                img.onload = function () {
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    context.drawImage(img, 0, 0, img.width, img.height);
+
+                    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                    const code = jsQR(imageData.data, canvas.width, canvas.height);
+
+                    if (code) {
+                        const totpUrl = code.data;
+                        console.log("解析到的二维码内容:", totpUrl);
+                        window.location.search = `?totp=${btoa(totpUrl)}`;
+                    } else {
+                        logError("无法解析二维码");
+                    }
+                };
+            };
+            reader.readAsDataURL(file);
+        });
 
         // 初始化 TOTP 显示
         updateTotp();
