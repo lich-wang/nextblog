@@ -42,6 +42,25 @@
             };
         }
 
+        // Base32 解码函数
+        function base32Decode(base32) {
+            const base32Alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+            let bits = "";
+            let result = "";
+
+            for (let i = 0; i < base32.length; i++) {
+                const val = base32Alphabet.indexOf(base32[i].toUpperCase());
+                if (val === -1) continue;
+                bits += val.toString(2).padStart(5, '0');
+            }
+
+            for (let i = 0; i + 8 <= bits.length; i += 8) {
+                result += String.fromCharCode(parseInt(bits.substring(i, i + 8), 2));
+            }
+
+            return result;
+        }
+
         // 解码 Base64 并解析 TOTP URL
         function parseTotpUrl(base64Url) {
             try {
@@ -74,7 +93,7 @@
             const epoch = Math.floor(time / 1000);
             const counter = Math.floor(epoch / period);
 
-            const key = Uint8Array.from(atob(secret.replace(/=/g, "")), c => c.charCodeAt(0));
+            const key = Uint8Array.from(base32Decode(secret), c => c.charCodeAt(0));
             const counterBytes = new ArrayBuffer(8);
             const counterView = new DataView(counterBytes);
             counterView.setUint32(4, counter);
