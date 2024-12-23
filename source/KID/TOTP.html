@@ -23,6 +23,11 @@
             font-size: 2em;
             color: #032b75;
         }
+        .timer {
+            margin-top: 10px;
+            font-size: 1.5em;
+            color: #888;
+        }
     </style>
 </head>
 <body>
@@ -30,6 +35,7 @@
         <h1>TOTP 查看器</h1>
         <div id="accountName"></div>
         <div class="totp" id="totpCode">加载中...</div>
+        <div class="timer" id="timer">30</div>
         <p id="log" style="margin-top: 20px; color: #666; font-size: 0.9em;"></p>
     </div>
 
@@ -132,10 +138,24 @@
             function refresh() {
                 const currentCode = generateTotp(totpData.secret, Date.now(), totpData.period, totpData.digits);
                 document.getElementById('totpCode').innerText = currentCode;
+                startTimer(totpData.period);
             }
 
             refresh();
             setInterval(refresh, totpData.period * 1000);
+        }
+
+        // 启动倒计时
+        function startTimer(period) {
+            let remaining = period;
+            document.getElementById('timer').innerText = remaining;
+            const timerInterval = setInterval(() => {
+                remaining -= 1;
+                document.getElementById('timer').innerText = remaining;
+                if (remaining <= 0) {
+                    clearInterval(timerInterval);
+                }
+            }, 1000);
         }
 
         // 记录日志
