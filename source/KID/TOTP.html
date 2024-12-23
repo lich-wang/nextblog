@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOTP Display</title>
+    <title>TOTP 查看器</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.2.0/sha.js"></script>
     <style>
         body {
@@ -27,13 +27,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>TOTP Viewer</h1>
+        <h1>TOTP 查看器</h1>
         <div id="accountName"></div>
-        <div class="totp" id="totpCode">Loading...</div>
+        <div class="totp" id="totpCode">加载中...</div>
+        <p id="log" style="margin-top: 20px; color: #666; font-size: 0.9em;"></p>
     </div>
 
     <script>
-        // Helper function to parse query parameters from URL
+        // 辅助函数：解析 URL 查询参数
         function getQueryParams() {
             const params = new URLSearchParams(window.location.search);
             return {
@@ -41,25 +42,32 @@
             };
         }
 
-        // Extract parameters and decode TOTP key
-        function parseTotpUrl(url) {
-            const regex = /otpauth:\/\/totp\/([^:]+):([^?]+)\?secret=([^&]+)&period=(\d+)&digits=(\d+)/;
-            const match = url.match(regex);
+        // 解码 Base64 并解析 TOTP URL
+        function parseTotpUrl(base64Url) {
+            try {
+                const decodedUrl = atob(base64Url);
+                const regex = /otpauth:\/\/totp\/([^:]+):([^?]+)\?secret=([^&]+)&period=(\d+)&digits=(\d+)/;
+                const match = decodedUrl.match(regex);
 
-            if (!match) {
+                if (!match) {
+                    logError("无法解析 TOTP URL");
+                    return null;
+                }
+
+                return {
+                    issuer: decodeURIComponent(match[1]),
+                    account: decodeURIComponent(match[2]),
+                    secret: match[3],
+                    period: parseInt(match[4], 10),
+                    digits: parseInt(match[5], 10),
+                };
+            } catch (e) {
+                logError("Base64 解码失败: " + e.message);
                 return null;
             }
-
-            return {
-                issuer: decodeURIComponent(match[1]),
-                account: decodeURIComponent(match[2]),
-                secret: match[3],
-                period: parseInt(match[4], 10),
-                digits: parseInt(match[5], 10),
-            };
         }
 
-        // TOTP generation
+        // 生成 TOTP
         function generateTotp(secret, time, period, digits) {
             const epoch = Math.floor(time / 1000);
             const counter = Math.floor(epoch / period);
@@ -83,16 +91,18 @@
             return String(code % (10 ** digits)).padStart(digits, '0');
         }
 
+        // 更新 TOTP 显示
         function updateTotp() {
             const params = getQueryParams();
             if (!params.totp) {
-                document.getElementById('totpCode').innerText = 'Invalid TOTP URL';
+                document.getElementById('totpCode').innerText = '无效的 TOTP URL';
+                logError("未找到 TOTP 参数");
                 return;
             }
 
-            const totpData = parseTotpUrl(decodeURIComponent(params.totp));
+            const totpData = parseTotpUrl(params.totp);
             if (!totpData) {
-                document.getElementById('totpCode').innerText = 'Invalid TOTP URL';
+                document.getElementById('totpCode').innerText = '解析失败';
                 return;
             }
 
@@ -107,7 +117,13 @@
             setInterval(refresh, totpData.period * 1000);
         }
 
-        // Initialize the TOTP display
+        // 记录日志
+        function logError(message) {
+            document.getElementById('log').innerText = message;
+            console.error(message);
+        }
+
+        // 初始化 TOTP 显示
         updateTotp();
     </script>
 </body>
