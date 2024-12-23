@@ -32,6 +32,19 @@
         .upload {
             margin-top: 20px;
         }
+        .button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #032b75;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -41,10 +54,13 @@
         <div class="totp" id="totpCode">加载中...</div>
         <div class="timer" id="timer">30</div>
         <input type="file" id="upload" class="upload" accept="image/*">
+        <button id="parseButton" class="button" disabled>解析二维码</button>
         <p id="log" style="margin-top: 20px; color: #666; font-size: 0.9em;"></p>
     </div>
 
     <script>
+        let uploadedFile = null;
+
         // 辅助函数：解析 URL 查询参数
         function getQueryParams() {
             const params = new URLSearchParams(window.location.search);
@@ -170,10 +186,15 @@
             console.error(message);
         }
 
-        // 处理图片上传并解析二维码
+        // 处理文件选择
         document.getElementById('upload').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (!file) return;
+            uploadedFile = event.target.files[0];
+            document.getElementById('parseButton').disabled = !uploadedFile;
+        });
+
+        // 处理解析按钮点击事件
+        document.getElementById('parseButton').addEventListener('click', function () {
+            if (!uploadedFile) return;
 
             const reader = new FileReader();
             reader.onload = function () {
@@ -198,7 +219,7 @@
                     }
                 };
             };
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(uploadedFile);
         });
 
         // 初始化 TOTP 显示
