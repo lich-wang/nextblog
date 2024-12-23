@@ -45,7 +45,9 @@
         // 解码 Base64 并解析 TOTP URL
         function parseTotpUrl(base64Url) {
             try {
+                console.log("Base64 编码内容:", base64Url);
                 const decodedUrl = atob(base64Url);
+                console.log("Base64 解码结果:", decodedUrl);
                 const regex = /otpauth:\/\/totp\/([^:]+):([^?]+)\?secret=([^&]+)&period=(\d+)&digits=(\d+)/;
                 const match = decodedUrl.match(regex);
 
