@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TOTP 查看器</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.2.0/sha.js"></script>
-    <script src="https://unpkg.com/jsqr/dist/jsQR.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -60,6 +60,7 @@
 
     <script>
         let uploadedFile = null;
+        let timerInterval = null;
 
         // 辅助函数：解析 URL 查询参数
         function getQueryParams() {
@@ -159,23 +160,24 @@
             function refresh() {
                 const currentCode = generateTotp(totpData.secret, Date.now(), totpData.period, totpData.digits);
                 document.getElementById('totpCode').innerText = currentCode;
-                startTimer(totpData.period);
+                startTimer(totpData.period, refresh);
             }
 
             refresh();
-            setInterval(refresh, totpData.period * 1000);
         }
 
         // 启动倒计时
-        function startTimer(period) {
+        function startTimer(period, onComplete) {
+            if (timerInterval) clearInterval(timerInterval);
             const epoch = Math.floor(Date.now() / 1000);
             let remaining = period - (epoch % period); // 计算当前周期的剩余秒数
             document.getElementById('timer').innerText = remaining;
-            const timerInterval = setInterval(() => {
+            timerInterval = setInterval(() => {
                 remaining -= 1;
                 document.getElementById('timer').innerText = remaining;
                 if (remaining <= 0) {
                     clearInterval(timerInterval);
+                    onComplete(); // 调用刷新函数刷新验证码
                 }
             }, 1000);
         }
